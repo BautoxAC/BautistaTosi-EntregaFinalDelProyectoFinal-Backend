@@ -1,0 +1,25 @@
+{{#if code}}
+<form action='/auth/passrecover' method='PUT' class="logIn">
+    <fieldset>
+        <h2>Escribe tu nueva Contraseña </h2>
+        <label for="password">Contraseña</label>
+        <input type="password" id="password" name="password">
+        <hr>
+        <input type="submit" id="buttonSubmitPass">
+    </fieldset>
+</form>
+{{else}}
+<form action='/auth/sendemail' method='POST' class="logIn">
+    <fieldset>
+        <h3>Escribe tu mail para enviarte un link para recuperar tu contaseña</h3>
+        <label for="email">Email del usuario</label>
+        <input type="email" id="email" name="email">
+        <hr>
+        <input type="submit" id="buttonSubmitMail" value="Enviar Mail">
+    </fieldset>
+</form>
+<p class="total">Si el mail no te llega revisa tu mail y toca de nuevo el boton</p>
+{{/if}}
+
+<a href='/auth/login' class="buttonAccount">Volver</a>
+<script src='/js/recoverpass.js'></script>

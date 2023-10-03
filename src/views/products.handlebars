@@ -1,0 +1,80 @@
+<header>
+    <div>
+        <h1>Perfil</h1>
+        <br>
+        email: <p id='email'>{{email}}</p>
+        <br>
+        Rol:
+        {{role}}
+        <br>
+        <br>
+    </div>
+    <div>
+        <a href='/auth/administracion'>Ver datos super secretos</a>
+        {{#if userId}}<a href='/api/users/premium/{{userId}}' class='role'>Cambia de rol</a>{{/if}}
+        <br>
+        <br>
+        <button><a href='/auth/logout'>Salir!</a></button>
+    </div>
+    <a href='/chat' title='ver el chat' class='perfil chat'><img src='chat.jpg' alt='ver el chat'></a>
+    <a href='/api/sessions/currentView' title='ver perfil' class='perfil'><img src='perfil.png' alt='Ver perfil'></a>
+    <a href='{{urlCart}}' class='carrito' title='ver carrito'><img src='carrito.png' alt='Ver Carrito'></a>
+    <form action='/api/products' method='post' enctype='multipart/form-data'>
+        <fieldset>
+            <h2>Crea tu propio producto</h2>
+            <label for='title'>Nombre:</label>
+            <input type='text' id='title' name='title'>
+            <hr>
+            <label for='description'>Descripicion:</label>
+            <input type='text' id='description' name='description'>
+            <hr>
+            <label for='category'>Categoria:</label>
+            <input type='text' id='category' name='category'>
+            <hr>
+            <label for='stock'>Stock:</label>
+            <input type='number' id='stock' name='stock'>
+            <hr>
+            <label for='price'>Precio:</label>
+            <input type='number' id='price' name='price'>
+            <hr>
+            <label for='code'>Codigo:</label>
+            <input type='text' id='code' name='code'>
+            <hr>
+            <label for='file'>Imagen del producto:</label>
+            <input type='file' id='file' name='file'>
+            <hr>
+            <input type='submit' id='buttonSumbit'>
+        </fieldset>
+    </form>
+</header>
+<main>
+    <h1>LISTADO DE PRODUCTOS:</h1>
+    <ol class='productContainer' id="productContainer">
+        {{#each payload}}
+        <div class='linkDetailContainer'>
+            <a href='/products/{{this._id}}' class='detailsLink' id='linkDetail{{this._id}}'>
+                <li class='product' id='{{this._id}}'>
+                    <h2>{{this.title}} </h2>
+                    <picture>{{#each this.thumbnails}}<img src='{{this}}'>{{/each}}</picture>
+                    <p>Id: {{this._id}}</p>
+                    <p>Dueño:{{this.owner}}</p>
+                </li>
+            </a>
+            <button id="buttonEliminate{{this._id}}"><img src="/quitar.png" alt="Eliminar producto"
+                    title="Eliminar producto"></button>
+            <button id='agregateOne{{this._id}}' class='CartAgregate'><img src='/AgregaUno.png'
+                    alt='Agrega uno al carrito' title='Agrega uno al carrito'></button>
+        </div>
+        {{/each}}
+    </ol>
+</main>
+<footer class='paginationLinks' id='{{page}}'>
+    {{#if hasPrevPage}}
+    <a href='{{prevLink}}'>⬅️{{prevPage}}</a>
+    {{/if}}
+    <a href='#'>{{page}}</a>
+    {{#if hasNextPage}}
+    <a href='{{nextLink}}'>{{nextPage}}➡️</a>
+    {{/if}}
+</footer>
+<script src='/js/productView.js'></script>

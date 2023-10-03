@@ -1,0 +1,342 @@
+paths:
+  /api/products:
+    get:
+      summary: "Obtiene todos los productos"
+      tags:
+        - Productos
+      responses:
+        "200":
+          description: "Los productos fueron devueltos satisfactoriamente"
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/AllProducts'
+        "500":
+          description: "Error del servidor. Usualmente generando la consulta o falla la conexión a la DB"
+    post:
+      summary: "Crear un nuevo producto"
+      tags:
+        - Productos
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/newProduct"
+      responses:
+        "200":
+          description: Producto creado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoOperacionProducto"
+
+  /api/products/{pid}:
+    get:
+      summary: "Obtiene un producto por ID"
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se busca
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Producto encontrado
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoOperacionProducto"
+
+    put:
+      summary: "Actualizar un producto por ID enviandole las props por body"
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se busca
+          schema:
+            $type: String
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "#/components/requestBodies/updateProduct"
+      responses:
+        "200":
+          description: Producto modificado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoOperacionProducto"
+
+    delete:
+      summary: "Eliminar un producto por ID"
+      tags:
+        - Productos
+      parameters:
+        - name: pid
+          in: path
+          required: true
+          description: ID del producto que se busca
+          schema:
+            $type: String
+      responses:
+        "200":
+          description: Producto eliminado exitosamente
+          content:
+            application/json:
+              schema:
+                $ref: "#/components/schemas/ResultadoOperacionProducto"
+    
+components:
+  schemas:
+    AllProducts:
+      type: object
+      properties:
+        status:
+          type: String
+          description: 'success or error'
+        payload: 
+          type: array
+          description: 'un array de productos'
+          items:
+            $ref: '#/components/schemas/Product'
+            type: object
+        prevLink: 
+          type: String
+          description: 'link a la pagina anterior de productos'
+        nextLink:
+          type: String
+          description: 'link a la pagina siguiente de productos'
+        totalPages: 
+          type: String
+          description: 'numero total de paginas de productos'
+        prevPage:
+          type: Number
+          description: 'numero de la pagina anterior'
+        nextPage: 
+          type: Number
+          description: 'numero de la pagina siguiente'
+        page: 
+          type: Number
+          description: 'numero de la pagina actual'
+        hasPrevPage: 
+          type: Boolean
+          description: 'determina si existe una pagina siguiente'
+        hasNextPage: 
+          type: Boolean
+          description: 'determina si existe una pagina previa'
+      example:
+        status: 'success'
+        payload: [
+            {
+              _id: new ObjectId("64f673e06ce9d3e3a324e919"),
+              title: 'hola2',
+              description: '324231fwe',
+              code: 'vertg5456g4',
+              stock: 213,
+              price: 12,
+              thumbnails: [Array],
+              status: true,
+              category: 'patata',
+              owner: 'admin',
+              __v: 0,
+              id: '64f673e06ce9d3e3a324e919'
+            },
+            {
+              _id: new ObjectId("64f6928574bebab8aab45416"),
+              title: 'qwe',
+              description: 'qwe',
+              code: 'wqeqr',
+              stock: 12,
+              price: 12,
+              thumbnails: [Array],
+              status: true,
+              category: 'qwqw',
+              owner: 'tosibautista@gmail.com',
+              __v: 0,
+              id: '64f6928574bebab8aab45416'
+            },
+            {
+              _id: new ObjectId("64f674e9bef979a8f479cd23"),
+              title: 'fg',
+              description: 'fghd',
+              code: '345',
+              stock: 4534,
+              price: 345,
+              thumbnails: [Array],
+              status: true,
+              category: 'fdgh',
+              owner: 'admin',
+              __v: 0,
+              id: '64f674e9bef979a8f479cd23'
+            },
+            {
+              _id: new ObjectId("64f6750e476aee81c5492ff1"),
+              title: 'trdyhg',
+              description: 'hfdgh',
+              code: 'gdf45g',
+              stock: 435,
+              price: 345,
+              thumbnails: [Array],
+              status: true,
+              category: 'fg',
+              owner: 'admin',
+              __v: 0,
+              id: '64f6750e476aee81c5492ff1'
+            },
+            {
+              _id: new ObjectId("64c6e4d759a76447575123aa"),
+              title: 'fdgngf',
+              description: 'hfgshdfgh',
+              code: 'dsfgsertg',
+              stock: 3432,
+              price: 345345,
+              thumbnails: [Array],
+              status: true,
+              category: 'remera',
+              __v: 0,
+              owner: 'admin',
+              id: '64c6e4d759a76447575123aa'
+            }
+          ]
+        prevLink: null
+        nextLink: null
+        totalPages: 1
+        prevPage: null
+        nextPage: null
+        page: 1
+        hasPrevPage: false
+        hasNextPage: false
+    ResultadoOperacionProducto:
+        type: object
+        properties:
+          status:
+            type: String
+            description: success or error
+          message:
+            type: String
+            description: aclarando qué ocurrió
+          data:
+            type: object
+            description: data obtenida segun lo que se pidio
+            $ref: '#/components/schemas/Product'
+        example:
+          status: 'success'
+          message: 'describe que le paso al producto'
+          data: 
+            _id:  ObjectId('64c6e4d759a76447575123aa')
+            title: 'fdgngf'
+            description: 'hfgshdfgh'
+            price: 345345
+            thumbnails: ['http://localhost:3000/1628878473206.png']
+            code: 'dsfgsertg'
+            stock: 3432
+            category: 'remeras'
+            owner: 'admin'
+    Product:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autogenerado por MongoDB
+        title:
+          type: String
+          description: Título del producto
+        description:
+          type: String
+          description: Descripción del producto
+        price:
+          type: Number
+          description: Precio del producto
+        thumbnails:
+          type: Array
+          description: Lista de URL de imágenes en miniatura
+        code:
+          type: String
+          description: Código único del producto
+        stock:
+          type: Number
+          description: Cantidad en stock del producto
+        category:
+          type: String
+          description: Categoría del producto
+        owner:
+          type: String
+          description: Propietario del producto
+      example:
+        _id:  ObjectId('64c6e4d759a76447575123aa')
+        title: 'fdgngf'
+        description: 'hfgshdfgh'
+        price: 345345
+        thumbnails: ['http://localhost:3000/1628878473206.png']
+        code: 'dsfgsertg'
+        stock: 3432
+        category: 'remeras'
+        owner: 'admin'
+
+  requestBodies:
+    newProduct:
+        type: object
+        properties:
+          title:
+            type: String
+            description: Título del nuevo producto
+          description:
+            type: String
+            description: Descripción del nuevo producto
+          price:
+            type: Number
+            description: Precio del nuevo producto
+          code:
+            type: String
+            description: Código único del nuevo producto
+          stock:
+            type: Number
+            description: Cantidad en stock del nuevo producto
+          image:
+            type: file
+            description: imagen del producto
+        example:
+          title: 'fdgngf'
+          description: 'hfgshdfgh'
+          price: 345345
+          image: 'aca iria un arhivo de imagen'
+          code: 'dsfgsertg'
+          stock: 3432
+    updateProduct:
+      type: object
+      properties:
+        title:
+          type: String
+          description: Nuevo título del producto
+        description:
+          type: String
+          description: Nueva descripción del producto
+        price:
+          type: Number
+          description: Nuevo precio del producto
+        code:
+          type: String
+          description: Nuevo código único del producto
+        stock:
+          type: Number
+          description: Nueva cantidad en stock del producto
+        category:
+          type: String
+          description: Nueva categoría del producto
+      example:
+        title: 'fdgf'
+        description: 'hfgshgh'
+        price: 34545
+        image: 'http://localhost:3000/162887847306.png'
+        code: 'dsfgertg'
+        stock: 342

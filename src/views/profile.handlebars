@@ -1,0 +1,47 @@
+<div class="container-custom">
+    <div class="section-custom">
+        <h2>Datos del usuario</h2>
+        <div class="user-info-custom">
+            <p><strong>Nombre:</strong> {{CurrentUserDTO.firstName}}</p>
+            <p><strong>Apellido:</strong> {{CurrentUserDTO.lastName}}</p>
+            <p><strong>Edad:</strong> {{CurrentUserDTO.age}}</p>
+            <p><strong>Email:</strong> {{CurrentUserDTO.email}}</p>
+        </div>
+    </div>
+
+    {{#if documents}}
+        <h2>Imágenes subidas al ser premium</h2>
+    <div class="section-custom image-section-custom">
+        {{#each documents}}
+        <div>
+            <img src="/{{this.reference}}" alt="{{this.name}}">
+            <br>
+            {{this.name}}
+            <br>
+        </div>
+
+        {{/each}}
+    </div>
+    {{else}}
+    <div class="section-custom">
+        <h2>Subir archivos para ser premium</h2>
+        <div class="form-section-custom">
+            <form class="form-custom" action="/api/users/{{userId}}/documents" method="post" enctype="multipart/form-data">
+                <label for="identificacion">Identificación:</label>
+                <input type="file" name="identificacion" id="identificacion"><br>
+
+                <label for="comprobanteDomicilio">Comprobante de domicilio:</label>
+                <input type="file" name="comprobanteDomicilio" id="comprobanteDomicilio"><br>
+
+                <label for="comprobanteEstadoCuenta">Comprobante de estado de cuenta:</label>
+                <input type="file" name="comprobanteEstadoCuenta" id="comprobanteEstadoCuenta"><br>
+
+                <button type="submit">Subir archivos</button>
+            </form>
+        </div>
+    </div>
+    {{/if}}
+
+
+</div>
+<a href='/products' class="buttonAccount">Volver</a>

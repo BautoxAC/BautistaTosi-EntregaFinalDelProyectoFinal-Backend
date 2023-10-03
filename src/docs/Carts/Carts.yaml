@@ -1,0 +1,256 @@
+
+paths:
+  /api/carts/{cid}:
+    get:
+      summary: Obtener un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          type: string
+          description: ID del carrito a recuperar.
+      responses:
+        200:
+          description: Éxito. Devuelve el carrito encontrado.
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/ResultadoOperacionCarrito'
+        401:
+          description: Error de autenticación.
+        403:
+          description: No autorizado.
+
+    delete:
+      summary: Eliminar un carrito por ID
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          type: string
+          description: ID del carrito a eliminar.
+      responses:
+        200:
+          description: Éxito. Devuelve el carrito eliminado.
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/ResultadoOperacionCarrito'
+        401:
+          description: Error de autenticación.
+        403:
+          description: No autorizado.
+
+    put:
+      summary: Agregar nuevos productos a un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          type: string
+          description: ID del carrito al que se agregarán los productos.
+      responses:
+        200:
+          description: Éxito. Devuelve el carrito actualizado.
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/ResultadoOperacionCarrito'
+        401:
+          description: Error de autenticación.
+        403:
+          description: No autorizado.
+
+  /api/carts/:
+    post:
+      summary: Crear un nuevo carrito
+      tags:
+        - Carts
+      responses:
+        200:
+          description: Éxito. Devuelve el carrito recién creado.
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/ResultadoOperacionCarrito'
+        401:
+          description: Error de autenticación.
+  /api/carts/{cid}/products/{pid}:
+    post:
+      summary: Agregar un producto a un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          type: string
+          description: ID del carrito al que se agregará el producto.
+        - name: pid
+          in: path
+          required: true
+          type: string
+          description: ID del producto que se agregará al carrito.
+      responses:
+        200:
+          description: Éxito. Devuelve el resultado de la operación.
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/ResultadoOperacionCarrito'
+        400:
+          description: Error. El producto no pudo ser agregado al carrito.
+        401:
+          description: Error de autenticación.
+        403:
+          description: No autorizado.
+
+    delete:
+      summary: Eliminar un producto de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          type: string
+          description: ID del carrito del que se eliminará el producto.
+        - name: pid
+          in: path
+          required: true
+          type: string
+          description: ID del producto que se eliminará del carrito.
+      responses:
+        200:
+          description: Éxito. Devuelve el resultado de la operación.
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/ResultadoOperacionCarrito'
+        401:
+          description: Error de autenticación.
+        403:
+          description: No autorizado.
+
+  /api/carts/{cid}/purchase:
+    post:
+      summary: Crear un ticket de compra a partir de un carrito
+      tags:
+        - Carts
+      parameters:
+        - name: cid
+          in: path
+          required: true
+          type: string
+          description: ID del carrito del que se generará el ticket de compra.
+      responses:
+        200:
+          description: Éxito. Devuelve el ticket de compra y los productos que no se pudieron comprar.
+          content:
+            application/json:
+              schema:
+                type: array
+                $ref: '#/components/schemas/TicketCompra'
+        401:
+          description: Error de autenticación.
+        403:
+          description: No autorizado.
+
+components:
+  schemas:
+    Carrito:
+      type: object
+      properties:
+        _id:
+          type: ObjectId
+          description: ID autogenerado por MongoDB
+        products:
+          descrition: productos que se agregaron al carrito
+          type: array
+          items:
+            type: object
+            properties:
+              idProduct:
+                type: string
+                description: ID autogenerado por MongoDB que se utiliza para luego popular el producto
+              quantity:
+                type: number
+                description: cantidad de productos agregados al carrito
+              _id: 
+                type: ObjectId
+                description: ID autogenerado por MongoDB 
+      example:
+        _id: ObjectId('64f50bfd23239a323c06a258')
+        products:
+          idProduct: 64f674e9bef979a8f479cd23
+          quantity: 5
+          _id: 64f68ff076266772de8f5959
+
+    ResultadoOperacionCarrito:
+      type: object
+      properties:
+        status:
+          type: String
+          description: success or error
+        message:
+          type: String
+          description: aclarando qué ocurrió
+        data:
+          type: object
+          description: data obtenida segun lo que se pidio
+          $ref: '#/components/schemas/Carrito'
+      example:
+        status: 'success'
+        message: 'describe que le paso al carrito'
+        data: 
+          _id: ObjectId('64f50bfd23239a323c06a258')
+          products:
+            idProduct: 64f674e9bef979a8f479cd23
+            quantity: 5
+            _id: 64f68ff076266772de8f5959
+
+    TicketCompra:
+      type: object
+      properties:
+        ticket:
+          type: object
+          properties:
+            _id:
+              type: ObjectId
+              description: ID autogenerado por MongoDB
+            code:
+              type: string
+              description: codigo generado aleatoriamente por uuid
+            purchase_datetime:
+              type: string
+              description: fecha y hora en la que se hico la compra
+            amount:
+              description: cantidad de dinero que costo la compra
+              type: number
+            purchaser:
+              description: quien hizo la compra 
+              type: string
+            productsCouldNotBuy:
+              description: array de ids de los productos que no pudieron comprarse
+              type: array
+              items:
+                type: string
+      example: 
+        _id: ObjectId('64c99645894b19519f5998b5')
+        code: '56dc0741-c369-405a-8e9d-fd4428fc2ea5'
+        purchase_datetime: '01/08/2023, 20:33:07'
+        amount: 345468
+        purchaser: 'tosibautista@gmail.com'
+        productsCouldNotBuy: ['64c6e4d759a76447575123aa']
