@@ -1,0 +1,15 @@
+<div class="user-list">
+    {{#each users}}
+    <div class="user">
+        <div class="user-info">
+            <h2>{{this.firstName}} {{this.lastName}} </h2>
+            <p>{{this.email}}</p>
+            <p>Rol: {{this.role}}</p>
+        </div>
+        <div class="user-actions">
+            <button class="delete-button">Eliminar</button>
+            <button class="edit-button">Modificar Rol</button>
+        </div>
+    </div>
+    {{/each}}
+</div>
