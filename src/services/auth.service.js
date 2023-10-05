@@ -21,7 +21,7 @@ export class AuthService {
         subject: 'Recuperacion de cuenta',
         html: `
             <div>
-              <h1>Aqui esta el link para que puedas restablecer tu cantraseña</h1>
+              <h1>Aqui esta el link para que puedas restablecer tu contraseña</h1>
               <a href="http://${host}/auth/passrecover?code=${code.stringCode}&email=${email}">Click aqui<a/>
             </div>
             `

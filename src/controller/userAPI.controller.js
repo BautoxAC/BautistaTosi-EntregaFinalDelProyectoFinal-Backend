@@ -24,4 +24,9 @@ export class UserController {
     const response = await UserManager.saveDocuments(identificacionFile, comprobanteDomicilioFile, comprobanteEstadoCuentaFile, userName)
     return res.json(response.message)
   }
+
+  async getUsers (req, res) {
+    const response = await UserManager.getUsers()
+    return res.render('users', { users: response.data })
+  }
 }

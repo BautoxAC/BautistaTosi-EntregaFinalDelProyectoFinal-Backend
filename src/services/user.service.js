@@ -2,6 +2,7 @@ import { UserManagerDBDAO } from '../DAO/DB/userManagerDB.dao.js'
 import { newMessage } from '../utils/utils.js'
 import { fileURLToPath } from 'url'
 import { dataVerification } from '../utils/dataVerification.js'
+import { UserInfo } from '../DAO/DTOs/userInfo.dto.js'
 const UserManagerDB = new UserManagerDBDAO()
 export class UserManagerDBService {
   async addUsser (userPassword, userName) {
@@ -53,6 +54,19 @@ export class UserManagerDBService {
       })
       await UserManagerDB.updateUser(user.data)
       return newMessage('success', 'successfully saved the documents', user.data)
+    } catch (e) {
+      return newMessage('failure', 'Failed to save the documents', e.toString(), fileURLToPath(import.meta.url))
+    }
+  }
+
+  async getUsers () {
+    try {
+      const users = await UserManagerDB.getUsers()
+      const usersDTO = users.map((user) => {
+        const userDTO = new UserInfo(user)
+        return userDTO
+      })
+      return newMessage('success', 'successfully found the users', usersDTO)
     } catch (e) {
       return newMessage('failure', 'Failed to save the documents', e.toString(), fileURLToPath(import.meta.url))
     }

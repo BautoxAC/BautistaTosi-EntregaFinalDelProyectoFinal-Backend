@@ -242,3 +242,45 @@ form {
     height: auto;
     margin-bottom: 10px;
 }
+/* users view  */
+.user-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    max-width: 800px;
+    margin: 0 auto;
+}
+
+.user {
+    border: 1px solid #ddd;
+    padding: 10px;
+    margin: 10px;
+    width: 30%;
+    box-sizing: border-box;
+}
+
+.user-info {
+    text-align: center;
+}
+
+.user-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 10px;
+}
+
+button {
+    padding: 5px 10px;
+    cursor: pointer;
+}
+
+.pagination {
+    display: flex;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.prev-page,
+.next-page {
+    margin: 0 10px;
+}

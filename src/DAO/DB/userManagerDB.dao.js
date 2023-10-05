@@ -91,4 +91,18 @@ export class UserManagerDBDAO {
       })
     }
   }
+
+  async getUsers () {
+    try {
+      const users = await userModel.find({})
+      return users
+    } catch (e) {
+      CustomError.createError({
+        name: 'Getting users Error',
+        cause: 'Failed get users in DAO (check the data)',
+        message: 'Error to find all the users',
+        code: EErros.DATABASES_ERROR
+      })
+    }
+  }
 }
