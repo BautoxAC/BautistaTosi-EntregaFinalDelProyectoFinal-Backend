@@ -20,7 +20,7 @@ const storage = multer.diskStorage({
     } else {
       folder = 'products'
     }
-    cb(null, __dirname + `/public/assets/${folder}`)
+    cb(null, __dirname + `/public/documents/${folder}`)
   },
   filename: (req, file, cb) => {
     cb(null, file.originalname + ' ' + req?.session?.user?.email)
