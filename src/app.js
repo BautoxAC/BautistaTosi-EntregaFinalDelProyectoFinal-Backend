@@ -35,9 +35,9 @@ connectMongo()
 
 // CONFIG EXPRESS
 app.use(express.static(path.join(__dirname, '/public')))
-app.use(express.static(path.join(__dirname, '/public/assets')))
-app.use(express.static(path.join(__dirname, '/public/assets/profiles')))
-app.use(express.static(path.join(__dirname, '/public/assets/products')))
+app.use(express.static(path.join(__dirname, '/public/documents')))
+app.use(express.static(path.join(__dirname, '/public/documents/profiles')))
+app.use(express.static(path.join(__dirname, '/public/documents/products')))
 app.use(express.json())
 app.use(compression())
 app.use(express.urlencoded({ extended: true }))
