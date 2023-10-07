@@ -1,6 +1,5 @@
-import { transport } from '../utils/nodemailer.js'
-import config from '../config/env.config.js'
 import { v4 as uuidv4 } from 'uuid'
+import { sendMail } from '../utils/nodemailer.js'
 import { fileURLToPath } from 'url'
 import { CustomError } from './errors/custom-error.js'
 import { EErros } from './errors/enums.js'
@@ -15,17 +14,12 @@ export class AuthService {
     try {
       const expire = new Date()
       const code = await CodeManager.createCode(email, uuidv4(), expire.getTime() + 3600000)
-      await transport.sendMail({
-        from: config.mailSender,
-        to: email,
-        subject: 'Recuperacion de cuenta',
-        html: `
-            <div>
-              <h1>Aqui esta el link para que puedas restablecer tu contraseña</h1>
-              <a href="http://${host}/auth/passrecover?code=${code.stringCode}&email=${email}">Click aqui<a/>
-            </div>
-            `
-      })
+      await sendMail(email, 'Recuperacion de cuenta', `
+      <div>
+        <h1>Aqui esta el link para que puedas restablecer tu contraseña</h1>
+        <a href="http://${host}/auth/passrecover?code=${code.stringCode}&email=${email}">Click aqui<a/>
+      </div>
+      `)
       return newMessage('success', 'Code added and email send successfully', {})
     } catch (e) {
       return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))

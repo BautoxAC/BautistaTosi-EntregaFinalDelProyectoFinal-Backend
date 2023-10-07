@@ -94,7 +94,7 @@ export class UserManagerDBDAO {
 
   async getUsers () {
     try {
-      const users = await userModel.find({})
+      const users = await userModel.find({}).lean()
       return users
     } catch (e) {
       CustomError.createError({
@@ -106,10 +106,11 @@ export class UserManagerDBDAO {
     }
   }
 
-  async deleteUser (userId) {
+  async deleteUser (userName) {
     try {
-      const users = await userModel.deleteOne({ _id: userId })
-      return users
+      const userDeleted = await userModel.findOne({ email: userName }).lean()
+      const response = await userModel.deleteOne({ email: userName }).lean()
+      return { userDeleted, response }
     } catch (e) {
       CustomError.createError({
         name: 'Deleting a user Error',

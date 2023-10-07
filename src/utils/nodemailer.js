@@ -1,6 +1,6 @@
 import nodemailer from 'nodemailer'
 import config from '../config/env.config.js'
-export const transport = nodemailer.createTransport({
+const transport = nodemailer.createTransport({
   service: 'gmail',
   port: 587,
   auth: {
@@ -8,3 +8,11 @@ export const transport = nodemailer.createTransport({
     pass: config.passMailSender
   }
 })
+export async function sendMail (emailReceiver, subject, html) {
+  await transport.sendMail({
+    from: config.mailSender,
+    to: emailReceiver,
+    subject,
+    html
+  })
+}

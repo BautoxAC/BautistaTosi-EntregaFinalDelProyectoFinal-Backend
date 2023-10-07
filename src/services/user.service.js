@@ -3,6 +3,7 @@ import { newMessage, convertirFechaAObjeto } from '../utils/utils.js'
 import { fileURLToPath } from 'url'
 import { dataVerification } from '../utils/dataVerification.js'
 import { CartManagerDBService } from './carts.service.js'
+import { sendMail } from '../utils/nodemailer.js'
 import { UserInfo } from '../DAO/DTOs/userInfo.dto.js'
 const CartManager = new CartManagerDBService()
 const UserManagerDB = new UserManagerDBDAO()
@@ -79,12 +80,12 @@ export class UserManagerDBService {
       const users = await UserManagerDB.getUsers()
       const usersDeleted = []
       for (const user of users) {
-        const twoDaysInMiliSeconds = 172800000
+        const twoDaysInMiliSeconds = 1
         const connectionDate = convertirFechaAObjeto(user.last_connection)
         const actualDate = new Date()
         const differenceMiliseconds = actualDate - connectionDate
         if (differenceMiliseconds > twoDaysInMiliSeconds) {
-          await this.deleteUserWithCart(user._id, user.cart)
+          await this.deleteUserWithCart(user.email, user.cart)
         }
       }
       return newMessage('success', 'successfully deleted the inactive users', usersDeleted)
@@ -93,14 +94,18 @@ export class UserManagerDBService {
     }
   }
 
-  async deleteUserWithCart (userId, cartId) {
+  async deleteUserWithCart (userName, cartId) {
     try {
-      const usersDeleted = []
       await CartManager.deleteCart(cartId)
-      usersDeleted.push(await UserManagerDB.deleteUser(userId))
-      return newMessage('success', 'successfully deleted the inactive users', usersDeleted)
+      const userDeleted = await UserManagerDB.deleteUser(userName)
+      await sendMail( userDeleted.userDeleted.email, 'Eliminación de cuenta', `
+      <div>
+        <h1>Su cuenta ha sido eliminada por estar inactiva por dos días</h1>
+      </div>
+      `)
+      return newMessage('success', 'successfully deleted the user', userDeleted)
     } catch (e) {
-      return newMessage('failure', 'Failed to delete the users', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to delete a user with his/her cart', e.toString(), fileURLToPath(import.meta.url))
     }
   }
 }
