@@ -85,3 +85,10 @@ export function formattedDate () {
   const currentDateAndTime = new Date()
   return currentDateAndTime.toLocaleString('en-GB')
 }
+// ------------------- Convert a string date to milisecons ------------------
+export function convertirFechaAObjeto (dateString) {
+  const [datePart, hourPart] = dateString.split(', ')
+  const [day, month, year] = datePart.split('/')
+  const [hours, minutes, seconds] = hourPart.split(':')
+  return new Date(year, month - 1, day, hours, minutes, seconds)
+}

@@ -105,4 +105,18 @@ export class UserManagerDBDAO {
       })
     }
   }
+
+  async deleteUser (userId) {
+    try {
+      const users = await userModel.deleteOne({ _id: userId })
+      return users
+    } catch (e) {
+      CustomError.createError({
+        name: 'Deleting a user Error',
+        cause: 'Failed delete a user in DAO (check the data)',
+        message: 'Error to delete a user',
+        code: EErros.DATABASES_ERROR
+      })
+    }
+  }
 }

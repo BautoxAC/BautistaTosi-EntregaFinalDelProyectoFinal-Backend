@@ -16,3 +16,5 @@ userRouter.post('/:uid/documents', isUser, uploader.fields([
 ]), userControllerRouting.saveDocuments)
 
 userRouter.get('/', isAdmin, userControllerRouting.getUsers)
+
+userRouter.delete('/', isAdmin, userControllerRouting.deleteInactiveUsers)

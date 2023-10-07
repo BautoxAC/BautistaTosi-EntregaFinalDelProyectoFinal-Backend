@@ -284,3 +284,20 @@ button {
 .next-page {
     margin: 0 10px;
 }
+#eliminarUsuario {
+    background-color: red;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    transition: background-color 0.3s; 
+}
+
+#eliminarUsuario:hover {
+    background-color: darkred;
+}
+.containerButtonDelete{
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}

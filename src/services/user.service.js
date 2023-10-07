@@ -1,8 +1,10 @@
 import { UserManagerDBDAO } from '../DAO/DB/userManagerDB.dao.js'
-import { newMessage } from '../utils/utils.js'
+import { newMessage, convertirFechaAObjeto } from '../utils/utils.js'
 import { fileURLToPath } from 'url'
 import { dataVerification } from '../utils/dataVerification.js'
+import { CartManagerDBService } from './carts.service.js'
 import { UserInfo } from '../DAO/DTOs/userInfo.dto.js'
+const CartManager = new CartManagerDBService()
 const UserManagerDB = new UserManagerDBDAO()
 export class UserManagerDBService {
   async addUsser (userPassword, userName) {
@@ -68,7 +70,37 @@ export class UserManagerDBService {
       })
       return newMessage('success', 'successfully found the users', usersDTO)
     } catch (e) {
-      return newMessage('failure', 'Failed to save the documents', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to get the users', e.toString(), fileURLToPath(import.meta.url))
+    }
+  }
+
+  async deleteInactiveUsers () {
+    try {
+      const users = await UserManagerDB.getUsers()
+      const usersDeleted = []
+      for (const user of users) {
+        const twoDaysInMiliSeconds = 172800000
+        const connectionDate = convertirFechaAObjeto(user.last_connection)
+        const actualDate = new Date()
+        const differenceMiliseconds = actualDate - connectionDate
+        if (differenceMiliseconds > twoDaysInMiliSeconds) {
+          await this.deleteUserWithCart(user._id, user.cart)
+        }
+      }
+      return newMessage('success', 'successfully deleted the inactive users', usersDeleted)
+    } catch (e) {
+      return newMessage('failure', 'Failed to delete the users', e.toString(), fileURLToPath(import.meta.url))
+    }
+  }
+
+  async deleteUserWithCart (userId, cartId) {
+    try {
+      const usersDeleted = []
+      await CartManager.deleteCart(cartId)
+      usersDeleted.push(await UserManagerDB.deleteUser(userId))
+      return newMessage('success', 'successfully deleted the inactive users', usersDeleted)
+    } catch (e) {
+      return newMessage('failure', 'Failed to delete the users', e.toString(), fileURLToPath(import.meta.url))
     }
   }
 }

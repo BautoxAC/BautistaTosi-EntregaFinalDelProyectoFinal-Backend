@@ -178,4 +178,13 @@ export class CartManagerDBService {
       return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
     }
   }
+
+  async deleteCart (idCart) {
+    try {
+      const cart = await CartManagerDAO.deleteCart(idCart)
+      return newMessage('success', 'cart deleted', cart)
+    } catch (e) {
+      return newMessage('failure', 'A problem ocurred', '', fileURLToPath(import.meta.url))
+    }
+  }
 }

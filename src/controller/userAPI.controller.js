@@ -29,4 +29,9 @@ export class UserController {
     const response = await UserManager.getUsers()
     return res.render('users', { users: response.data })
   }
+
+  async deleteInactiveUsers (req, res) {
+    const response = await UserManager.deleteInactiveUsers()
+    return res.render('response', { response })
+  }
 }

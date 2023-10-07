@@ -116,4 +116,18 @@ export class CartManagerDBDAO {
       })
     }
   }
+
+  async deleteCart (idCart) {
+    try {
+      const cartDeleted = await cartModel.deleteOne({ _id: idCart })
+      return cartDeleted
+    } catch (e) {
+      CustomError.createError({
+        name: 'Deleting cart Error',
+        cause: 'Failed to delete delete a cart in DAO (check the data)',
+        message: 'Error to delete a cart',
+        code: EErros.DATABASES_ERROR
+      })
+    }
+  }
 }
