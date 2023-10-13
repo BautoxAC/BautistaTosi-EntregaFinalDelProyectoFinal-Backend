@@ -3,6 +3,7 @@ import { newMessage } from '../utils/utils.js'
 import { CustomError } from './errors/custom-error.js'
 import { EErros } from './errors/enums.js'
 import { fileURLToPath } from 'url'
+import { sendMail } from '../utils/nodemailer.js'
 const ProductManagerDAO = new ProductManagerDBDAO()
 export class ProductManagerDBService {
   async addProduct (title, description, price, thumbnails, code, stock, category, owner) {
@@ -135,6 +136,13 @@ export class ProductManagerDBService {
       const product = await this.getProductById(id)
       if (owner === product.data.owner || owner === 'adminCoder@coder.com') {
         const productToDelete = await ProductManagerDAO.deleteProduct(id)
+        if (product.data.owner !== 'admin') {
+          await sendMail(product.data.owner, 'Eliminación de producto', `
+        <div>
+          <h1>Su producto(${product.data.title}) ha sido eliminado por ${owner === 'adminCoder@coder.com' ? 'administrador' : 'usted'}</h1>
+        </div>
+        `)
+        }
         return newMessage('success', 'Deleted successfully', productToDelete)
       } else {
         CustomError.createError({

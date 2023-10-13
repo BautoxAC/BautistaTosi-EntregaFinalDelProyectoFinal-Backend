@@ -19,8 +19,8 @@ export class ProductsAPIController {
   }
 
   async deleteProduct (req, res) {
-    const Id = req.params.pid
-    const owner = req.session.user.email
+    const Id = req.params?.pid
+    const owner = req.session?.user?.email
     const response = await list.deleteProduct(Id, owner)
     const status = response.status === 'success' ? 200 : 400
     return res.status(status).json(response)

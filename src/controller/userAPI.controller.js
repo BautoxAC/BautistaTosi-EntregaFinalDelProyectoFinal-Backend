@@ -3,6 +3,7 @@ const UserManager = new UserManagerDBService()
 export class UserAPIController {
   async changerole (req, res) {
     const userName = req.params?.uname
+    /* tiene que ser cambiado... */
     const user = await UserManager.getUserByUserName(userName)
     if (user?.data?.documents.length === 3) {
       await UserManager.changerole(user.data)

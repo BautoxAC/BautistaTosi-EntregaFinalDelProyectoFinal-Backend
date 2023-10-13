@@ -1,9 +1,8 @@
-const origin = window.location.origin
-
+const params = window.location.search
 // Function to get user profile
 async function getUserProfile () {
   try {
-    const response = await fetch(`${origin}/auth/perfil`, { method: 'GET' })
+    const response = await fetch('/auth/perfil', { method: 'GET' })
     if (!response.ok) {
       throw new Error('Ha ocurrido un error inesperado al obtener el perfil del usuario')
     }
@@ -18,7 +17,7 @@ async function getUserProfile () {
 // Function to get products
 async function getProducts () {
   try {
-    const response = await fetch(`${origin}/api/products`, { method: 'GET' })
+    const response = await fetch(`/api/products/${params}`, { method: 'GET' })
     if (!response.ok) {
       throw new Error('Ha ocurrido un error inesperado al obtener los productos')
     }
@@ -33,7 +32,7 @@ async function getProducts () {
 // Function to delete a product
 async function deleteProduct (productId) {
   try {
-    const response = await fetch(`${origin}/api/products/${productId}`, { method: 'DELETE' })
+    const response = await fetch(`/api/products/${productId}`, { method: 'DELETE' })
     if (!response.ok) {
       throw new Error('Ha ocurrido un error inesperado al eliminar el producto')
     }
@@ -47,7 +46,7 @@ async function deleteProduct (productId) {
 // Function to add a product to the cart
 async function addToCart (productId, cartId) {
   try {
-    const response = await fetch(`${origin}/api/carts/${cartId}/products/${productId}`, { method: 'POST' })
+    const response = await fetch(`/api/carts/${cartId}/products/${productId}`, { method: 'POST' })
     if (!response.ok) {
       throw new Error('Ha ocurrido un error inesperado al agregar el producto al carrito')
     }
