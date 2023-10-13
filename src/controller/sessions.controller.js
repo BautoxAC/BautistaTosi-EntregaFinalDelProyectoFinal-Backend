@@ -11,7 +11,7 @@ export class SessionsController {
     const CurrentUserDTO = new CurrentUser(req.session.user)
     const userId = req.session.user._id
     const user = await UserManagerDBServiceControlling.getUserByUserName(req.session.user.email)
-    const documents = user.data.documents
+    const documents = user.data?.documents
     return res.render('profile', { CurrentUserDTO, userId, documents })
   }
 

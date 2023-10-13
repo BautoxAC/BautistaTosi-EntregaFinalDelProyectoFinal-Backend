@@ -1,20 +1,22 @@
 import express from 'express'
 import { isUser, isAdmin } from '../middlewares/auth.js'
-import { UserController } from '../controller/userAPI.controller.js'
+import { UserAPIController } from '../controller/userAPI.controller.js'
 import { uploader } from '../utils/utils.js'
-export const userRouter = express.Router()
-const userControllerRouting = new UserController()
+export const userAPIRouter = express.Router()
+const userControllerRouting = new UserAPIController()
 
-userRouter.put('/premium/:uid', isUser, userControllerRouting.changerole)
+userAPIRouter.post('/premium/:uname', isAdmin, userControllerRouting.changerole)
 
-userRouter.get('/premium/:uid', isUser, userControllerRouting.renderChangeRole)
+userAPIRouter.get('/premium/:uid', isUser, userControllerRouting.renderChangeRole)
 
-userRouter.post('/:uid/documents', isUser, uploader.fields([
+userAPIRouter.post('/:uid/documents', isUser, uploader.fields([
   { name: 'identificacion', maxCount: 1 },
   { name: 'comprobanteDomicilio', maxCount: 1 },
   { name: 'comprobanteEstadoCuenta', maxCount: 1 }
 ]), userControllerRouting.saveDocuments)
 
-userRouter.get('/', isAdmin, userControllerRouting.getUsers)
+userAPIRouter.get('/', isAdmin, userControllerRouting.getUsers)
 
-userRouter.delete('/', isAdmin, userControllerRouting.deleteInactiveUsers)
+userAPIRouter.delete('/', isAdmin, userControllerRouting.deleteInactiveUsers)
+
+userAPIRouter.delete('/:uname', isAdmin, userControllerRouting.deleteUserWithCart)

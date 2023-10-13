@@ -7,8 +7,8 @@
             <p>Rol: {{this.role}}</p>
         </div>
         <div class="user-actions">
-            <button class="delete-button">Eliminar</button>
-            <button class="edit-button">Modificar Rol</button>
+            <button class="delete-button" id="deleteUserButton{{this.email}}">Eliminar</button>
+            <button class="edit-button" id="modifyRoleButton{{this.email}}">Modificar Rol</button>
         </div>
     </div>
     {{/each}}

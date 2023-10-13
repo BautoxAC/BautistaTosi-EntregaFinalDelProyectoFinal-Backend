@@ -26,17 +26,17 @@ export class UserManagerDBService {
     }
   }
 
-  async changerole (updateUser, userId) {
+  async changerole (user) {
     try {
-      if (updateUser.role === 'user') {
-        updateUser.role = 'premium'
+      if (user.role === 'user') {
+        user.role = 'premium'
       } else {
-        updateUser.role = 'user'
+        user.role = 'user'
       }
-      await UserManagerDB.changeRole(userId, updateUser)
-      return updateUser.role
+      await UserManagerDB.changeRole(user)
+      return newMessage('success', 'role changed successfully', user)
     } catch (e) {
-      return newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to change a role', e.toString(), fileURLToPath(import.meta.url))
     }
   }
 
@@ -80,7 +80,7 @@ export class UserManagerDBService {
       const users = await UserManagerDB.getUsers()
       const usersDeleted = []
       for (const user of users) {
-        const twoDaysInMiliSeconds = 1
+        const twoDaysInMiliSeconds = 172800000
         const connectionDate = convertirFechaAObjeto(user.last_connection)
         const actualDate = new Date()
         const differenceMiliseconds = actualDate - connectionDate
@@ -96,11 +96,15 @@ export class UserManagerDBService {
 
   async deleteUserWithCart (userName, cartId) {
     try {
+      if (!cartId) {
+        const user = await this.getUserByUserName(userName)
+        cartId = user.data.cart
+      }
       await CartManager.deleteCart(cartId)
       const userDeleted = await UserManagerDB.deleteUser(userName)
-      await sendMail( userDeleted.userDeleted.email, 'Eliminación de cuenta', `
+      await sendMail(userDeleted.userDeleted.email, 'Eliminación de cuenta', `
       <div>
-        <h1>Su cuenta ha sido eliminada por estar inactiva por dos días</h1>
+        <h1>Su cuenta ha sido eliminada por estar inactiva por dos días o por comprometer los estandares de calidad de productos</h1>
       </div>
       `)
       return newMessage('success', 'successfully deleted the user', userDeleted)

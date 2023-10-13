@@ -9,7 +9,8 @@ import { errorHandler } from './middlewares/error.js'
 import { loggerTestRouter } from './routes/loggerTest.router.js'
 import { mockingProducts } from './routes/mockingProducts.router.js'
 import { cartsAPIRouter } from './routes/cartsAPI.router.js'
-import { userRouter } from './routes/userAPI.router.js'
+import { userAPIRouter } from './routes/userAPI.router.js'
+import { userViewRouter } from './routes/userView.router.js'
 import { productViewRouter } from './routes/productsView.router.js'
 import { productsAPIRouter } from './routes/productsAPI.router.js'
 import { authRouter } from './routes/auth.router.js'
@@ -69,7 +70,7 @@ const specs = swaggerJSDoc(swaggerOptions)
 app.use('/api/products', productsAPIRouter)
 app.use('/api/carts', cartsAPIRouter)
 app.use('/api/sessions', sessionsRouter)
-app.use('/api/users', userRouter)
+app.use('/api/users', userAPIRouter)
 app.use('/loggerTest', loggerTestRouter)
 
 // Rutes: HTML/HandleBars
@@ -77,6 +78,7 @@ app.use('/mockingproducts', mockingProducts)
 app.use('/products', productViewRouter)
 app.use('/carts', cartViewRouter)
 app.use('/auth', authRouter)
+app.use('/users', userViewRouter)
 
 // Rutes: SOCKETS
 app.use('/chat', chatRouter)

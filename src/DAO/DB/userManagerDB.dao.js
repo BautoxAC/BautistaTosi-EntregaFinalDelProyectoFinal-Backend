@@ -65,9 +65,9 @@ export class UserManagerDBDAO {
     }
   }
 
-  async changeRole (userId, updateUser) {
+  async changeRole (userToUpdate) {
     try {
-      const user = await userModel.updateOne({ _id: userId }, updateUser).lean()
+      const user = await userModel.updateOne({ _id: userToUpdate._id }, userToUpdate).lean()
       return user
     } catch (e) {
       CustomError.createError({

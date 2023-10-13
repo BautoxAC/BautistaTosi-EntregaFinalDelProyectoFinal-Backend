@@ -127,17 +127,6 @@ form {
     margin-left: 40%;
     font-size: 1.5rem;
 }
-.role{
-    padding: 2rem;
-    font-size: 1.3rem;
-}
-.roleBox{
-    position: static;
-    margin: auto;
-    text-align: center;
-    width: 40%;
-    margin-top: 5rem;
-}
 #button{
     padding: 2rem;
 }

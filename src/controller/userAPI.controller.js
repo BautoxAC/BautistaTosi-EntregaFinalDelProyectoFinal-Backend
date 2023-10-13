@@ -1,12 +1,11 @@
 import { UserManagerDBService } from '../services/user.service.js'
 const UserManager = new UserManagerDBService()
-export class UserController {
+export class UserAPIController {
   async changerole (req, res) {
-    const userName = req.session.user.email
+    const userName = req.params?.uname
     const user = await UserManager.getUserByUserName(userName)
     if (user?.data?.documents.length === 3) {
-      const userId = req.params.uid
-      req.session.user.role = await UserManager.changerole(req.session.user, userId)
+      await UserManager.changerole(user.data)
       return res.status(200).json(`rol cambiado a ${req.session.user.role}`)
     }
     return res.status(404).json('rol no ha sido cambiado faltan poner las imagenes en el perfil, en donde dice ver perfil con el icono de perfil')
@@ -27,11 +26,17 @@ export class UserController {
 
   async getUsers (req, res) {
     const response = await UserManager.getUsers()
-    return res.render('users', { users: response.data })
+    return res.json(response).status(200)
   }
 
   async deleteInactiveUsers (req, res) {
     const response = await UserManager.deleteInactiveUsers()
+    return res.render('response', { response })
+  }
+
+  async deleteUserWithCart (req, res) {
+    const user = req.params?.uname
+    const response = await UserManager.deleteUserWithCart(user)
     return res.render('response', { response })
   }
 }
