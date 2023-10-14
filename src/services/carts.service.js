@@ -166,14 +166,14 @@ export class CartManagerDBService {
         }
         productsCouldNotBuy.push(product.idProduct._id)
       }
-      const total = productsCouldBuy.reduce((acc, pro) => acc + parseInt(pro.idProduct.price), 0)
+      const total = productsCouldBuy.reduce((acc, pro) => acc + parseInt(pro.idProduct.price * pro.quantity), 0)
       const ticket = await CartManagerDAO.createATicketToBuy(purchaser, total)
       for (let i = 0; i < productsCouldBuy.length; i++) {
         const product = productsCouldBuy[i]
         await listProducts.updateProduct(product.idProduct._id, { stock: product.idProduct.stock - product.quantity })
-        this.deleteProduct(idCart, product.idProduct._id)
+        await this.deleteProduct(idCart, product.idProduct._id)
       }
-      return newMessage('success', 'the ticket of the product was created', { ticket, productsCouldNotBuy })
+      return newMessage('success', 'the ticket of the purchase was created', { ticket, productsCouldNotBuy })
     } catch (e) {
       return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
     }

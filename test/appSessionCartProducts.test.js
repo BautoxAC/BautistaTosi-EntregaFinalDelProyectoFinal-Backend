@@ -109,7 +109,7 @@ describe('ENDPONT /api/products', function () {
       title: fakerES.commerce.product(),
       description: fakerES.commerce.productDescription(),
       code: fakerES.database.mongodbObjectId(),
-      stock: fakerES.finance.amount(),
+      stock: Math.round(fakerES.finance.amount()),
       price: fakerES.commerce.price(),
       status: fakerES.datatype.boolean(),
       category: fakerES.commerce.productAdjective()

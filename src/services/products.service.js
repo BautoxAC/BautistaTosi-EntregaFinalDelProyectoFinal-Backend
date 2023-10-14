@@ -11,7 +11,7 @@ export class ProductManagerDBService {
       if (owner === 'adminCoder@coder.com') {
         owner = 'admin'
       }
-      const product = { title, description, price: Number(price), thumbnails: thumbnails !== undefined && [thumbnails], code, stock: Number(stock), category, owner }
+      const product = { title, description, price: Math.round(Number(price)), thumbnails: thumbnails !== undefined && [thumbnails], code, stock: Number(stock), category, owner }
       let addPro = true
       const productValues = Object.values(product)
       for (const prop of productValues) {

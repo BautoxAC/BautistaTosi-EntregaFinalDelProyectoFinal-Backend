@@ -15,7 +15,7 @@ buttonPurchase.addEventListener('click', async () => {
       alert('compra realizada')
       setTimeout(() => {
         location.reload()
-      }, 10000)
+      }, 5000)
     })
     .catch(error => console.log(error))
 })
