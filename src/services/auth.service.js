@@ -46,8 +46,11 @@ export class AuthService {
     }
   }
 
-  async updateUser (userMail) {
+  async updateLastConnectionUser (userMail) {
     try {
+      if (userMail === 'adminCoder@coder.com') {
+        return newMessage('success', 'user is an admin', '')
+      }
       dataVerification([userMail, 'string'])
       const user = await UserManager.getUserByUserName(userMail)
       user.last_connection = formattedDate()

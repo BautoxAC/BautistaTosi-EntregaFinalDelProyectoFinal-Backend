@@ -31,7 +31,7 @@ export class AuthController {
       if (err) {
         return res.status(500).render('error', { error: 'no se pudo cerrar su session' })
       }
-      await authServiceControlling.updateUser(userMail)
+      await authServiceControlling.updateLastConnectionUser(userMail)
       return res.redirect('/auth/login')
     })
   }
