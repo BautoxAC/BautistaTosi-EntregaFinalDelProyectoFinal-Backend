@@ -18,7 +18,7 @@ export class AuthController {
       age: req.user?.age,
       cart: req.user.cart
     }
-    return res.redirect('/products')
+    return res.redirect('/home')
   }
 
   loginFail (req, res) {
@@ -53,7 +53,7 @@ export class AuthController {
       role: req.user.role,
       cart: req.user.cart
     }
-    return res.redirect('/products')
+    return res.redirect('/home')
   }
 
   registerFail (req, res) {

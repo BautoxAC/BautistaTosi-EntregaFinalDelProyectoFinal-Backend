@@ -51,7 +51,7 @@
     <ol class='productContainer' id="productContainer">
         {{#each payload}}
         <div class='linkDetailContainer'>
-            <a href='/products/{{this._id}}' class='detailsLink' id='linkDetail{{this._id}}'>
+            <a href='/home/{{this._id}}' class='detailsLink' id='linkDetail{{this._id}}'>
                 <li class='product' id='{{this._id}}'>
                     <h2>{{this.title}} </h2>
                     <picture>{{#each this.thumbnails}}<img src='{{this}}'>{{/each}}</picture>

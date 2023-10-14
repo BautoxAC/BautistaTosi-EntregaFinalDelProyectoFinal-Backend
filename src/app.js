@@ -11,7 +11,7 @@ import { mockingProducts } from './routes/mockingProducts.router.js'
 import { cartsAPIRouter } from './routes/cartsAPI.router.js'
 import { userAPIRouter } from './routes/userAPI.router.js'
 import { userViewRouter } from './routes/userView.router.js'
-import { productViewRouter } from './routes/productsView.router.js'
+import { homeRouter } from './routes/home.router.js'
 import { productsAPIRouter } from './routes/productsAPI.router.js'
 import { authRouter } from './routes/auth.router.js'
 import { __dirname } from './utils/__dirname.js'
@@ -75,7 +75,7 @@ app.use('/loggerTest', loggerTestRouter)
 
 // Rutes: HTML/HandleBars
 app.use('/mockingproducts', mockingProducts)
-app.use('/products', productViewRouter)
+app.use('/home', homeRouter)
 app.use('/carts', cartViewRouter)
 app.use('/auth', authRouter)
 app.use('/users', userViewRouter)

@@ -4,7 +4,7 @@ const UserManagerDBServiceControlling = new UserManagerDBService()
 export class SessionsController {
   redirectHome (req, res) {
     req.session.user = req.user
-    res.redirect('/products')
+    res.redirect('/home')
   }
 
   async RenderCurrentSession (req, res) {
