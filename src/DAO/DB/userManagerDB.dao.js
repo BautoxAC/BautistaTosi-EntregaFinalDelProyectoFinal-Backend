@@ -52,7 +52,7 @@ export class UserManagerDBDAO {
         })
       } else {
         user.password = createHash(newPass)
-        const userPasswordRecovered = await userModel.updateOne(user).lean()
+        const userPasswordRecovered = await userModel.updateOne({ _id: user._id }, user).lean()
         return userPasswordRecovered
       }
     } catch (e) {

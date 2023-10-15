@@ -1,6 +1,5 @@
-const eliminarUsuarioBtn = document.getElementById('eliminarUsuario')
-
-eliminarUsuarioBtn.addEventListener('click', function () {
+// eslint-disable-next-line no-unused-vars
+async function deleteAllInactiveUsers () {
   fetch('/api/users/', {
     method: 'DELETE'
   })
@@ -14,23 +13,9 @@ eliminarUsuarioBtn.addEventListener('click', function () {
     .catch(error => {
       console.error('Error:', error)
     })
-})
-
-// Function to fetch all users
-async function getUsers () {
-  try {
-    const response = await fetch('/api/users', { method: 'GET' })
-    if (!response.ok) {
-      throw new Error('An unexpected error occurred while fetching users')
-    }
-    const data = await response.json()
-    return data
-  } catch (error) {
-    console.error(error)
-  }
 }
-
 // Function to delete a user
+// eslint-disable-next-line no-unused-vars
 async function deleteUser (userName) {
   try {
     const response = await fetch(`/api/users/${userName}`, { method: 'DELETE' })
@@ -44,6 +29,7 @@ async function deleteUser (userName) {
 }
 
 // Function to modify a user's role
+// eslint-disable-next-line no-unused-vars
 async function modifyUserRole (userName) {
   try {
     const response = await fetch(`/api/users/premium/${userName}`, {
@@ -57,26 +43,3 @@ async function modifyUserRole (userName) {
     console.error(error)
   }
 }
-
-// Main function that handles the flow
-async function main () {
-  const users = await getUsers()
-  if (users) {
-    users.data.forEach(user => {
-      const deleteButton = document.getElementById(`deleteUserButton${user.email}`)
-      deleteButton.addEventListener('click', async (e) => {
-        e.preventDefault()
-        await deleteUser(user.email)
-      })
-
-      const modifyRoleButton = document.getElementById(`modifyRoleButton${user.email}`)
-      modifyRoleButton.addEventListener('click', async (e) => {
-        e.preventDefault()
-        await modifyUserRole(user.email)
-      })
-    })
-  }
-}
-
-// Call the main function to start the process
-main()

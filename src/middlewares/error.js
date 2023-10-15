@@ -2,7 +2,7 @@ import { EErros } from '../services/errors/enums.js'
 import { newMessage } from '../utils/utils.js'
 import { fileURLToPath } from 'url'
 export function errorHandler (error, req, res, next) {
-  newMessage('failure', error.cause, error.message, fileURLToPath(import.meta.url))
+  newMessage('failure', error.cause, error.message, fileURLToPath(import.meta.url), error?.code)
   switch (error.code) {
     case EErros.INVALID_TYPES_ERROR:
       res

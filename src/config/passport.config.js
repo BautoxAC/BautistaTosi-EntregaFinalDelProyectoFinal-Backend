@@ -40,10 +40,10 @@ export function iniPassPortLocalAndGithub () {
         }
         user.last_connection = formattedDate()
         await userModel.updateOne({ _id: user._id.toString() }, user)
-        newMessage('success', 'success in logging with passport(the user alredy exists)', {})
+        newMessage('success', 'success in logging with passport(the user alredy exists)', {}, '', 200)
         return done(null, user)
       } catch (e) {
-        newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url))
+        newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
         return done(e)
       }
     })
@@ -81,10 +81,10 @@ export function iniPassPortLocalAndGithub () {
             last_connection: formattedDate()
           }
           const userCreated = await userModel.create(newUser)
-          newMessage('success', 'success in registering with passport', {})
+          newMessage('success', 'success in registering with passport', {}, '', 200)
           return done(null, userCreated)
         } catch (e) {
-          newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url))
+          newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
           return done(e)
         }
       }
@@ -134,16 +134,16 @@ export function iniPassPortLocalAndGithub () {
               last_connection: formattedDate()
             }
             const userCreated = await userModel.create(newUser)
-            newMessage('success', 'user logged succesfully with passport github', {})
+            newMessage('success', 'user logged succesfully with passport github', {}, '', 200)
             return done(null, userCreated)
           } else {
             user.last_connection = formattedDate()
             await userModel.updateOne({ _id: user._id.toString() }, user)
-            newMessage('success', 'user logged succesfully with passport github', {})
+            newMessage('success', 'user logged succesfully with passport github', {}, '', 200)
             return done(null, user)
           }
         } catch (e) {
-          newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url))
+          newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
           return done(e)
         }
       }

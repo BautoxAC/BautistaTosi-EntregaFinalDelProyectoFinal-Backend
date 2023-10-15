@@ -1,7 +1,7 @@
 <main>
     <h1>LISTADO DE PRODUCTOS GUARDADOS EN EL CARRITO:</h1>
     <ol class="productContainer">
-        {{#each cart}}
+        {{#each cart.products}}
         <div class="linkDetailContainer">
             <li class="product" id="{{this.idProduct._id}}">
                 <h2>{{this.idProduct.title}} </h2>
@@ -14,7 +14,7 @@
         {{/each}}
         <div class="total">
             <p >Total {{total}}$</p>
-            <button id="buttonPurchase">Terminar compra</button>
+            <button id="buttonPurchase" onclick="finishBuying('{{cart._id}}')">Terminar compra</button>
         </div>
     </ol>
 </main>

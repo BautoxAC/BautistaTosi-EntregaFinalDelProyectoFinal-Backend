@@ -12,7 +12,7 @@ export class ChatManagerDBService {
       const user = await UserManagerDB.getUserByUserName(userName)
       if (user) {
         const lastAdded = await ChatManagerDB.addMessage(message, userName)
-        return newMessage('success', 'Message added successfully', lastAdded)
+        return newMessage('success', 'Message added successfully', lastAdded, '', 200)
       } else {
         CustomError.createError({
           name: 'Finding user Error',
@@ -20,19 +20,18 @@ export class ChatManagerDBService {
           message: 'Error the message could not be sent the user was not found ',
           code: EErros.INCORRECT_CREDENTIALS_ERROR
         })
-        return newMessage('failure', 'The user was not foud', '', fileURLToPath(import.meta.url))
       }
     } catch (e) {
-      return newMessage('failure', 'an error ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'an error ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
   async getMessages () {
     try {
       const messages = await ChatManagerDB.getMessages()
-      return newMessage('success', 'Messages got', messages)
+      return newMessage('success', 'Messages got', messages, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Messages not found', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Messages not found', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

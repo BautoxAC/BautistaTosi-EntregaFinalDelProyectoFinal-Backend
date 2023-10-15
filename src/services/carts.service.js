@@ -12,7 +12,7 @@ export class CartManagerDBService {
       const cartFindId = await CartManagerDAO.getCartById(id)
       const totalPrices = cartFindId.products.reduce((acc, pro) => acc + parseInt(pro.idProduct.price * pro.quantity), 0)
       if (cartFindId) {
-        return newMessage('success', 'Found successfully', { products: [...cartFindId.products], totalPrices, _id: cartFindId._id } || [])
+        return newMessage('success', 'Found successfully', { products: [...cartFindId.products], totalPrices, _id: cartFindId._id } || [], '', 200)
       } else {
         CustomError.createError({
           name: 'Finding cart error',
@@ -22,16 +22,16 @@ export class CartManagerDBService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
   async addCart () {
     try {
       const lastAdded = await CartManagerDAO.addCart()
-      return newMessage('success', 'cart added successfully', lastAdded)
+      return newMessage('success', 'cart added successfully', lastAdded, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -70,7 +70,7 @@ export class CartManagerDBService {
         const positionProductRepeated = cart.products.indexOf(productRepeated)
         if (cart.products[positionProductRepeated].quantity < product.stock) {
           cart.products[positionProductRepeated].quantity++
-          messageReturn = newMessage('warning', 'Product repeated: quantity added correctly', cart)
+          messageReturn = newMessage('warning', 'Product repeated: quantity added correctly', cart, '', 200)
         } else {
           CustomError.createError({
             name: 'Agregating product to cart error',
@@ -81,12 +81,12 @@ export class CartManagerDBService {
         }
       } else {
         cart.products.push({ idProduct: product._id, quantity: 1 })
-        messageReturn = newMessage('success', 'Product added correctly', cart)
+        messageReturn = newMessage('success', 'Product added correctly', cart, '', 200)
       }
       await CartManagerDAO.addProduct(cart)
       return messageReturn
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -97,9 +97,9 @@ export class CartManagerDBService {
       const positionProduct = cartProducts.indexOf(cartFindId.products.find(pro => pro.idProduct === idProduct))
       cartProducts.splice(positionProduct, 1)
       await CartManagerDAO.deleteProduct(cartFindId)
-      return newMessage('success', 'product deleted', cartFindId)
+      return newMessage('success', 'product deleted', cartFindId, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -136,9 +136,9 @@ export class CartManagerDBService {
       const cartFindId = await CartManagerDAO.getCartById(idCart)
       cartFindId.products = products
       await CartManagerDAO.addNewProducts(cartFindId)
-      return newMessage('success', 'products updated', cartFindId)
+      return newMessage('success', 'products updated', cartFindId, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -147,9 +147,9 @@ export class CartManagerDBService {
       const cartFindId = await CartManagerDAO.getCartById(idCart)
       cartFindId.products = []
       await CartManagerDAO.deleteAllProducts(cartFindId)
-      return newMessage('success', 'products emptied', cartFindId)
+      return newMessage('success', 'products emptied', cartFindId, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', '', fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', '', fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -173,18 +173,18 @@ export class CartManagerDBService {
         await listProducts.updateProduct(product.idProduct._id, { stock: product.idProduct.stock - product.quantity })
         await this.deleteProduct(idCart, product.idProduct._id)
       }
-      return newMessage('success', 'the ticket of the purchase was created', { ticket, productsCouldNotBuy })
+      return newMessage('success', 'the ticket of the purchase was created', { ticket, productsCouldNotBuy }, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
   async deleteCart (idCart) {
     try {
       const cart = await CartManagerDAO.deleteCart(idCart)
-      return newMessage('success', 'cart deleted', cart)
+      return newMessage('success', 'cart deleted', cart, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', '', fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', '', fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

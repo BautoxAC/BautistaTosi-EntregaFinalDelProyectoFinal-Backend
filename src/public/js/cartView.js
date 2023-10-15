@@ -1,9 +1,6 @@
-const buttonPurchase = document.getElementById('buttonPurchase')
-const url = window.location.href
-const origin = window.location.origin
-const cartId = url.split('/').pop()
-buttonPurchase.addEventListener('click', async () => {
-  await fetch(`${origin}/api/carts/${cartId}/purchase`, { method: 'POST' })
+// eslint-disable-next-line no-unused-vars
+async function finishBuying (cartId) {
+  await fetch(`/api/carts/${cartId}/purchase`, { method: 'POST' })
     .then((response) => {
       if (!response.ok) {
         console.log(response)
@@ -15,7 +12,7 @@ buttonPurchase.addEventListener('click', async () => {
       alert('compra realizada')
       setTimeout(() => {
         location.reload()
-      }, 5000)
+      }, 2500)
     })
     .catch(error => console.log(error))
-})
+}

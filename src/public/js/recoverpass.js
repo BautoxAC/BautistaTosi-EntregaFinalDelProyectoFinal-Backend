@@ -1,17 +1,22 @@
-const buttonSubmit = document.getElementById('buttonSubmitPass')
+const buttonSubmitPass = document.getElementById('buttonSubmitPass')
+const newPass = document.getElementById('password')
 const href = window.location.href
-buttonSubmit?.addEventListener('click', async (e) => {
+buttonSubmitPass?.addEventListener('click', async (e) => {
   e.preventDefault()
-  await fetch(href, { method: 'PUT' })
+  if (newPass.value === '') {
+    alert('la contraseña nueva esta vacia')
+    return
+  }
+  await fetch(`${href}&password=${newPass.value}`, { method: 'PUT' })
     .then((response) => {
       if (!response.ok) {
-        alert('ha ocurrido un error, la contraseña no se ha cambiado')
+        alert('ha ocurrido un error, la contaseña no se ha restablecido')
         throw new Error('ha ocurrido un error inesperado')
       }
       return response.json()
     })
     .then(data => {
-      alert(data.message)
+      alert('contraseña restablecida')
     })
     .catch(error => console.log(error))
 })

@@ -11,18 +11,18 @@ export class UserManagerDBService {
   async addUsser (userPassword, userName) {
     try {
       const user = UserManagerDB.addUsser(userPassword, userName)
-      return newMessage('success', 'user Created successfully', user)
+      return newMessage('success', 'user Created successfully', user, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to create a user', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to create a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
   async getUserByUserName (userName) {
     try {
       const user = await UserManagerDB.getUserByUserName(userName)
-      return newMessage('success', 'user Found successfully', user)
+      return newMessage('success', 'user Found successfully', user, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -34,9 +34,9 @@ export class UserManagerDBService {
         user.role = 'user'
       }
       await UserManagerDB.changeRole(user)
-      return newMessage('success', 'role changed successfully', user)
+      return newMessage('success', 'role changed successfully', user, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to change a role', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to change a role', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -56,9 +56,9 @@ export class UserManagerDBService {
         reference: comprobanteEstadoCuentaFile.originalname + ' ' + userName
       })
       await UserManagerDB.updateUser(user.data)
-      return newMessage('success', 'successfully saved the documents', user.data)
+      return newMessage('success', 'successfully saved the documents', user.data, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to save the documents', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to save the documents', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -69,9 +69,9 @@ export class UserManagerDBService {
         const userDTO = new UserInfo(user)
         return userDTO
       })
-      return newMessage('success', 'successfully found the users', usersDTO)
+      return newMessage('success', 'successfully found the users', usersDTO, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to get the users', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to get the users', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -88,9 +88,9 @@ export class UserManagerDBService {
           await this.deleteUserWithCart(user.email, user.cart)
         }
       }
-      return newMessage('success', 'successfully deleted the inactive users', usersDeleted)
+      return newMessage('success', 'successfully deleted the inactive users', usersDeleted, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to delete the users', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to delete the users', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -107,9 +107,9 @@ export class UserManagerDBService {
         <h1>Su cuenta ha sido eliminada por estar inactiva por dos días o por comprometer los estandares de calidad de productos</h1>
       </div>
       `)
-      return newMessage('success', 'successfully deleted the user', userDeleted)
+      return newMessage('success', 'successfully deleted the user', userDeleted, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to delete a user with his/her cart', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'Failed to delete a user with his/her cart', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

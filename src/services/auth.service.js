@@ -20,9 +20,9 @@ export class AuthService {
         <a href="http://${host}/auth/passrecover?code=${code.stringCode}&email=${email}">Click aqui<a/>
       </div>
       `)
-      return newMessage('success', 'Code added and email send successfully', {})
+      return newMessage('success', 'Code added and email send successfully', {}, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -32,7 +32,7 @@ export class AuthService {
       const nowMiliseconds = new Date()
       if (code.expire > nowMiliseconds.getTime()) {
         await UserManager.recoverPass(newPass, email)
-        return newMessage('success', 'password succesfully recovered', {})
+        return newMessage('success', 'password succesfully recovered', {}, '', 200)
       } else {
         CustomError.createError({
           name: 'Recovering password error',
@@ -42,22 +42,22 @@ export class AuthService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
   async updateLastConnectionUser (userMail) {
     try {
       if (userMail === 'adminCoder@coder.com') {
-        return newMessage('success', 'user is an admin', '')
+        return newMessage('success', 'user is an admin so the last connection cannot be updated', {}, '', 200)
       }
       dataVerification([userMail, 'string'])
       const user = await UserManager.getUserByUserName(userMail)
       user.last_connection = formattedDate()
       await UserManager.updateUser(user)
-      return newMessage('success', 'user succesfully updated', user)
+      return newMessage('success', 'user succesfully updated', user, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

@@ -38,10 +38,10 @@ export class ProductManagerDBService {
         })
       } else {
         const lastAdded = await ProductManagerDAO.addProduct(product)
-        return newMessage('success', 'Product added successfully', lastAdded)
+        return newMessage('success', 'Product added successfully', lastAdded, '', 200)
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -87,9 +87,9 @@ export class ProductManagerDBService {
         }
       }
       await ProductManagerDAO.updateProduct(productToUpdate)
-      return newMessage(status2, 'Updated successfully' + (messages).toString(), productToUpdate)
+      return newMessage(status2, 'Updated successfully' + (messages).toString(), productToUpdate, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -105,10 +105,10 @@ export class ProductManagerDBService {
     }
     try {
       const { docs, rest } = await ProductManagerDAO.getProducts(limit, page, query, sort)
-      newMessage('success', 'the products were found correctly', {})
+      newMessage('success', 'the products were found correctly', {}, '', 200)
       return res('success', docs, rest)
     } catch (e) {
-      newMessage('failure', 'the products were not found', {}, fileURLToPath(import.meta.url))
+      newMessage('failure', 'the products were not found', {}, fileURLToPath(import.meta.url), e?.code)
       return res(e, {}, {})
     }
   }
@@ -117,7 +117,7 @@ export class ProductManagerDBService {
     try {
       const productFindId = await ProductManagerDAO.getProductById(id)
       if (productFindId) {
-        return newMessage('success', 'Found successfully', productFindId)
+        return newMessage('success', 'Found successfully', productFindId, '', 200)
       } else {
         CustomError.createError({
           name: 'Finding product error',
@@ -127,7 +127,7 @@ export class ProductManagerDBService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -143,7 +143,7 @@ export class ProductManagerDBService {
         </div>
         `)
         }
-        return newMessage('success', 'Deleted successfully', productToDelete)
+        return newMessage('success', 'Deleted successfully', productToDelete, '', 200)
       } else {
         CustomError.createError({
           name: 'Deleting product error',
@@ -153,7 +153,7 @@ export class ProductManagerDBService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url))
+      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

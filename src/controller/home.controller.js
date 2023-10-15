@@ -11,7 +11,7 @@ export class HomeController {
     return res.status(200).render('home', {
       ...pageInfo,
       email,
-      urlCart: `/carts/${cart}`,
+      cart,
       role,
       userId: userId?.data?._id
     })

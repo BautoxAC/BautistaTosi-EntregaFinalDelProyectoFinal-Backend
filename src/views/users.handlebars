@@ -7,12 +7,12 @@
             <p>Rol: {{this.role}}</p>
         </div>
         <div class="user-actions">
-            <button class="delete-button" id="deleteUserButton{{this.email}}">Eliminar</button>
-            <button class="edit-button" id="modifyRoleButton{{this.email}}">Modificar Rol</button>
+            <button class="delete-button" onclick="deleteUser('{{this.email}}')">Eliminar</button>
+            <button class="edit-button" onclick="modifyUserRole('{{this.email}}')">Modificar Rol</button>
         </div>
     </div>
     {{/each}}
 </div>
-<div class="containerButtonDelete"><button id="eliminarUsuario">Eliminar Usuarios inactivos</button></div>
+<div class="containerButtonDelete"><button id="eliminarUsuario" onclick="deleteAllInactiveUsers()">Eliminar Usuarios inactivos</button></div>
 {{> back}}
 <script src='/js/users.js'></script>

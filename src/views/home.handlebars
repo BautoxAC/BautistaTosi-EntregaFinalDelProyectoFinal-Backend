@@ -17,7 +17,7 @@
     </div>
     <a href='/chat' title='ver el chat' class='perfil chat'><img src='chat.jpg' alt='ver el chat'></a>
     <a href='/api/sessions/currentView' title='ver perfil' class='perfil'><img src='perfil.png' alt='Ver perfil'></a>
-    <a href='{{urlCart}}' class='carrito' title='ver carrito'><img src='carrito.png' alt='Ver Carrito'></a>
+    <a href='/carts/{{cart}}' class='carrito' title='ver carrito'><img src='carrito.png' alt='Ver Carrito'></a>
     <form action='/api/products' method='post' enctype='multipart/form-data'>
         <fieldset>
             <h2>Crea tu propio producto</h2>
@@ -53,15 +53,16 @@
         <div class='linkDetailContainer'>
             <a href='/home/{{this._id}}' class='detailsLink' id='linkDetail{{this._id}}'>
                 <li class='product' id='{{this._id}}'>
-                    <h2>{{this.title}} </h2>
+                    <h2>{{this.title}}</h2>
                     <picture>{{#each this.thumbnails}}<img src='{{this}}'>{{/each}}</picture>
                     <p>Id: {{this._id}}</p>
                     <p>Dueño:{{this.owner}}</p>
+                    
                 </li>
             </a>
-            <button id="buttonEliminate{{this._id}}"><img src="/quitar.png" alt="Eliminar producto"
+            <button onclick="deleteProduct('{{this._id}}')"><img src="/quitar.png" alt="Eliminar producto"
                     title="Eliminar producto"></button>
-            <button id='agregateOne{{this._id}}' class='CartAgregate'><img src='/AgregaUno.png'
+            <button class='CartAgregate' onclick="addToCart('{{this._id}}','{{@root.cart}}')"><img src='/AgregaUno.png'
                     alt='Agrega uno al carrito' title='Agrega uno al carrito'></button>
         </div>
         {{/each}}
@@ -76,4 +77,4 @@
     <a href='{{nextLink}}'>{{nextPage}}➡️</a>
     {{/if}}
 </footer>
-<script src='/js/productView.js'></script>
+<script src='/js/home.js'></script>

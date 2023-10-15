@@ -27,9 +27,9 @@ const storage = multer.diskStorage({
   }
 })
 export const uploader = multer({ storage })
-// -------------Mensaje de status---------------------------
-export function newMessage (status, message, data, filename) {
-  const messageObject = { status, message, data, filename }
+// -------------Message of logger---------------------------
+export function newMessage (status, message, data, filename, statusCode) {
+  const messageObject = { status, message, data, filename, statusCode }
   switch (status) {
     case 'success':
       logger.info(messageObject)
