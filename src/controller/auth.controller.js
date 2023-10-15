@@ -1,4 +1,5 @@
 import { AuthService } from '../services/auth.service.js'
+import { dataResponseToString } from '../utils/dataResponseToString.js'
 const authServiceControlling = new AuthService()
 export class AuthController {
   renderLogin (req, res) {
@@ -7,7 +8,7 @@ export class AuthController {
 
   logUser (req, res) {
     if (!req.user) {
-      return res.json({ error: 'invalid credentials' })
+      return res.render('error', { error: 'invalid credentials' })
     }
     req.session.user = {
       _id: req.user?._id,
@@ -22,7 +23,7 @@ export class AuthController {
   }
 
   loginFail (req, res) {
-    return res.json({ error: 'fail to login' })
+    return res.render('error', { error: 'fail to login' })
   }
 
   async logOut (req, res) {
@@ -42,7 +43,7 @@ export class AuthController {
 
   registerUser (req, res) {
     if (!req.user) {
-      return res.json({ error: 'something went wrong' })
+      return res.render('error', { error: 'something went wrong' })
     }
     req.session.user = {
       _id: req.user._id,
@@ -57,23 +58,18 @@ export class AuthController {
   }
 
   registerFail (req, res) {
-    return res.json({ error: 'fail to register' })
-  }
-
-  getPerfil (req, res) {
-    const user = req.session.user
-    return res.json({ perfil: user })
+    return res.render('error', { error: 'fail to register' })
   }
 
   getSecret (req, res) {
-    return res.send('datos super secretos clasificados sobre los perfiles registrados de la pagina')
+    return res.render('secretInfo')
   }
 
-  sendEmail (req, res) {
+  async sendEmail (req, res) {
     const { email } = req.body
     const host = req.get('host')
-    authServiceControlling.sendEmail(email, host)
-    return res.send('email enviado correctamente')
+    const response = dataResponseToString(await authServiceControlling.sendEmail(email, host))
+    return res.status(200).render('response', { response })
   }
 
   renderRecover (req, res) {
@@ -83,11 +79,7 @@ export class AuthController {
 
   async passRecover (req, res) {
     const { code: stringCode, email, password: newPass } = req.query
-    const result = await authServiceControlling.passRecover(newPass, stringCode, email)
-    if (result.status === 'failure') {
-      return res.status(400).json(result)
-    } else {
-      return res.status(200).json(result)
-    }
+    const response = dataResponseToString(await authServiceControlling.passRecover(newPass, stringCode, email))
+    return res.status(200).render('response', { response })
   }
 }

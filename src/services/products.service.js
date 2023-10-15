@@ -117,7 +117,7 @@ export class ProductManagerDBService {
     try {
       const productFindId = await ProductManagerDAO.getProductById(id)
       if (productFindId) {
-        return newMessage('success', 'Found successfully', productFindId, '', 200)
+        return newMessage('success', 'Product found successfully', productFindId, '', 200)
       } else {
         CustomError.createError({
           name: 'Finding product error',

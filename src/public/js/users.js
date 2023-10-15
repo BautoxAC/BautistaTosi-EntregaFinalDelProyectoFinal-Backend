@@ -1,5 +1,6 @@
-// eslint-disable-next-line no-unused-vars
-async function deleteAllInactiveUsers () {
+const eliminarUsuarioBtn = document.getElementById('eliminarUsuario')
+
+eliminarUsuarioBtn.addEventListener('click', function (e) {
   fetch('/api/users/', {
     method: 'DELETE'
   })
@@ -13,7 +14,7 @@ async function deleteAllInactiveUsers () {
     .catch(error => {
       console.error('Error:', error)
     })
-}
+})
 // Function to delete a user
 // eslint-disable-next-line no-unused-vars
 async function deleteUser (userName) {

@@ -1,4 +1,5 @@
 import { fakerES } from '@faker-js/faker'
+import { newMessage } from '../utils/utils.js'
 export class MockingProductsService {
   createMockProducts () {
     const Createthumbnails = () => {
@@ -24,6 +25,6 @@ export class MockingProductsService {
         category: fakerES.commerce.productAdjective()
       })
     }
-    return products
+    return newMessage('success', 'Mock products created', products, '', 200)
   }
 }

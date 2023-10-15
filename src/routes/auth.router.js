@@ -18,8 +18,6 @@ authRouter.post('/register', AdminCredentials, passport.authenticate('register',
 
 authRouter.get('/failregister', authControllerRouting.registerFail)
 
-authRouter.get('/perfil', isUser, authControllerRouting.getPerfil)
-
 authRouter.get('/administracion', isUser, isAdmin, authControllerRouting.getSecret)
 
 authRouter.get('/passrecover', authControllerRouting.renderRecover)

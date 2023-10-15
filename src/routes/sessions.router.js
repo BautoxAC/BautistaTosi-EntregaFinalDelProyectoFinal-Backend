@@ -8,5 +8,3 @@ sessionsRouter.get('/github', passport.authenticate('github', { scope: ['user:em
 sessionsRouter.get('/githubcallback', passport.authenticate('github', { failureRedirect: '/login' }), SessionsControllerRouting.redirectHome)
 
 sessionsRouter.get('/currentView', SessionsControllerRouting.RenderCurrentSession)
-
-sessionsRouter.get('/current', SessionsControllerRouting.seeCurrentSession)

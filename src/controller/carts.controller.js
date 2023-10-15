@@ -1,45 +1,50 @@
 import { CartManagerDBService } from '../services/carts.service.js'
-import { newMessage } from '../utils/utils.js'
+import { dataResponseToString } from '../utils/dataResponseToString.js'
 const list = new CartManagerDBService()
 export class CartsController {
   async getCartMycart (req, res) {
     const Id = req.session?.user?.cart
-    return res.status(200).json(newMessage('success', 'carrito por id', await list.getCartById(Id)))
+    const response = dataResponseToString(await list.getCartById(Id))
+    return res.status(200).render('response', { response })
   }
 
   async addCart (req, res) {
-    return res.status(200).json(await list.addCart())
+    const response = dataResponseToString(await list.addCart())
+    return res.status(200).render('response', { response })
   }
 
   async addProduct (req, res) {
     const idCart = req.params.cid
     const idProduct = req.params.pid
     const owner = req.session.user.email
-    const response = await list.addProduct(idCart, idProduct, owner)
-    const status = response.status !== 'failure' ? 200 : 400
-    return res.status(status).json(response)
+    const response = dataResponseToString(await list.addProduct(idCart, idProduct, owner))
+    return res.status(200).render('response', { response })
   }
 
   async deleteProduct (req, res) {
     const idCart = req.params.cid
     const idProduct = req.params.pid
-    return res.status(200).json(await list.deleteProduct(idCart, idProduct))
+    const response = dataResponseToString(await list.deleteProduct(idCart, idProduct))
+    return res.status(200).render('response', { response })
   }
 
   async deleteAllProducts (req, res) {
     const idCart = req.params.cid
-    return res.status(200).json(await list.deleteAllProducts(idCart))
+    const response = dataResponseToString(await list.deleteAllProducts(idCart))
+    return res.status(200).render('response', { response })
   }
 
   async addNewProducts (req, res) {
     const idCart = req.params.cid
     const products = req.body
-    return res.status(200).json(await list.addNewProducts(idCart, products))
+    const response = dataResponseToString(await list.addNewProducts(idCart, products))
+    return res.status(200).render('response', { response })
   }
 
   async createATicketToBuy (req, res) {
     const idCart = req.session.user.cart
     const purchaser = req.session.user.email
-    return res.status(200).json(await list.createATicketToBuy(idCart, purchaser))
+    const response = dataResponseToString(await list.createATicketToBuy(idCart, purchaser))
+    return res.status(200).render('response', { response })
   }
 }

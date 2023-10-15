@@ -1,1 +1,10 @@
-<div>{{response}}</div>
+<div>
+    {{#with response}}
+    <div class="info">
+        <h2 class="h2">Status: {{status}}</h2>
+        <p>Message: {{message}}</p>
+        <p>Data: {{data}}</p>
+        <p>Filename: {{filename}}</p>
+        <p>Status Code: {{statusCode}}</p>
+    </div>
+    {{/with}}

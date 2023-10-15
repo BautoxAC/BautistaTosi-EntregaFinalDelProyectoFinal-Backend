@@ -14,9 +14,4 @@ export class SessionsController {
     const documents = user.data?.documents
     return res.render('profile', { CurrentUserDTO, userId, documents })
   }
-
-  seeCurrentSession (req, res) {
-    const CurrentUserDTO = new CurrentUser(req.session.user)
-    return res.status(200).json({ Session: CurrentUserDTO })
-  }
 }
