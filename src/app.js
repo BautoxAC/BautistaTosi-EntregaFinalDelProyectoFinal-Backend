@@ -9,10 +9,9 @@ import { errorHandler } from './middlewares/error.js'
 import { loggerTestRouter } from './routes/loggerTest.router.js'
 import { mockingProducts } from './routes/mockingProducts.router.js'
 import { cartsAPIRouter } from './routes/cartsAPI.router.js'
-import { userAPIRouter } from './routes/userAPI.router.js'
-import { userViewRouter } from './routes/userView.router.js'
+import { usersRouter } from './routes/users.router.js'
 import { homeRouter } from './routes/home.router.js'
-import { productsAPIRouter } from './routes/productsAPI.router.js'
+import { productsRouter } from './routes/products.router.js'
 import { authRouter } from './routes/auth.router.js'
 import { __dirname } from './utils/__dirname.js'
 import swaggerJSDoc from 'swagger-jsdoc'
@@ -22,7 +21,6 @@ import { connectMongo, connectSocketServer } from './utils/utils.js'
 import { iniPassPortLocalAndGithub } from './config/passport.config.js'
 import { cartViewRouter } from './routes/cartView.router.js'
 import { chatRouter } from './routes/chat.router.js'
-import { sessionsRouter } from './routes/sessions.router.js'
 import compression from 'express-compression'
 
 const { sessionSecret, mongoUrl, url, port } = config
@@ -67,10 +65,9 @@ connectSocketServer(httpServer)
 const specs = swaggerJSDoc(swaggerOptions)
 
 // Rutes: API REST WITH JSON
-app.use('/api/products', productsAPIRouter)
+app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsAPIRouter)
-app.use('/api/sessions', sessionsRouter)
-app.use('/api/users', userAPIRouter)
+app.use('/api/users', usersRouter)
 app.use('/loggerTest', loggerTestRouter)
 
 // Rutes: HTML/HandleBars
@@ -78,7 +75,6 @@ app.use('/mockingproducts', mockingProducts)
 app.use('/home', homeRouter)
 app.use('/carts', cartViewRouter)
 app.use('/auth', authRouter)
-app.use('/users', userViewRouter)
 
 // Rutes: SOCKETS
 app.use('/chat', chatRouter)

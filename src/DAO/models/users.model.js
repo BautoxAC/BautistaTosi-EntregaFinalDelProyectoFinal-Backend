@@ -43,4 +43,4 @@ const schema = new Schema({
   last_connection: { type: String, required: true, default: '' }
 })
 
-export const userModel = model('users', schema)
+export const usersModel = model('users', schema)

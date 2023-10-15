@@ -1,12 +1,12 @@
 import { ProductManagerDBService } from '../services/products.service.js'
-import { UserManagerDBService } from '../services/user.service.js'
-const UserManager = new UserManagerDBService()
+import { UsersManagerDBService } from '../services/users.service.js'
+const UsersManager = new UsersManagerDBService()
 const list = new ProductManagerDBService()
 export class HomeController {
   async renderAllProducts (req, res) {
     const { limit, page, query, sort } = req.query
     const { email, role, cart } = req.session.user
-    const userId = await UserManager.getUserByUserName(email)
+    const userId = await UsersManager.getUserByUserName(email)
     const pageInfo = await list.getProducts(limit, page, query, sort)
     return res.status(200).render('home', {
       ...pageInfo,

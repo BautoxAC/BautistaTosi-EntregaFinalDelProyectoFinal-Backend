@@ -1,12 +1,12 @@
-import { userModel } from '../models/users.model.js'
+import { usersModel } from '../models/users.model.js'
 import { EErros } from '../../services/errors/enums.js'
 import { createHash, isValidPassword } from '../../utils/utils.js'
 import { CustomError } from '../../services/errors/custom-error.js'
-export class UserManagerDBDAO {
+export class UsersManagerDBDAO {
   async addUsser (userPassword, userName) {
     try {
-      await userModel.create({ userPassword, userName })
-      const lastAdded = await userModel.findOne({}).sort({ _id: -1 }).lean()
+      await usersModel.create({ userPassword, userName })
+      const lastAdded = await usersModel.findOne({}).sort({ _id: -1 }).lean()
       return lastAdded
     } catch (e) {
       CustomError.createError({
@@ -20,7 +20,7 @@ export class UserManagerDBDAO {
 
   async getUserByUserName (userName) {
     try {
-      const user = await userModel.findOne({ email: userName }).lean()
+      const user = await usersModel.findOne({ email: userName }).lean()
       return user
     } catch (e) {
       CustomError.createError({
@@ -52,7 +52,7 @@ export class UserManagerDBDAO {
         })
       } else {
         user.password = createHash(newPass)
-        const userPasswordRecovered = await userModel.updateOne({ _id: user._id }, user).lean()
+        const userPasswordRecovered = await usersModel.updateOne({ _id: user._id }, user).lean()
         return userPasswordRecovered
       }
     } catch (e) {
@@ -65,36 +65,22 @@ export class UserManagerDBDAO {
     }
   }
 
-  async changeRole (userToUpdate) {
-    try {
-      const user = await userModel.updateOne({ _id: userToUpdate._id }, userToUpdate).lean()
-      return user
-    } catch (e) {
-      CustomError.createError({
-        name: 'Changing a role Error',
-        cause: 'Failed to change the role the User in DAO (check the data)',
-        message: 'Error to change a role',
-        code: EErros.DATABASES_ERROR
-      })
-    }
-  }
-
   async updateUser (user) {
     try {
-      await userModel.updateOne({ _id: user._id.toString() }, user)
+      await usersModel.updateOne({ _id: user._id.toString() }, user)
     } catch (e) {
       CustomError.createError({
         name: 'Updating a user Error',
         cause: 'Failed to update the User in DAO (check the data)',
         message: 'Error to update a user',
-        code: EErros.DATABASES_ERROR
+        code: EErros.INCORRECT_CREDENTIALS_ERROR
       })
     }
   }
 
   async getUsers () {
     try {
-      const users = await userModel.find({}).lean()
+      const users = await usersModel.find({}).lean()
       return users
     } catch (e) {
       CustomError.createError({
@@ -108,8 +94,8 @@ export class UserManagerDBDAO {
 
   async deleteUser (userName) {
     try {
-      const userDeleted = await userModel.findOne({ email: userName }).lean()
-      const response = await userModel.deleteOne({ email: userName }).lean()
+      const userDeleted = await usersModel.findOne({ email: userName }).lean()
+      const response = await usersModel.deleteOne({ email: userName }).lean()
       return { userDeleted, response }
     } catch (e) {
       CustomError.createError({

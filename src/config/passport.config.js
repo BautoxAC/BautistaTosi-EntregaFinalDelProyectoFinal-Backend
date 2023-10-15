@@ -1,4 +1,4 @@
-import { userModel } from '../DAO/models/users.model.js'
+import { usersModel } from '../DAO/models/users.model.js'
 import GitHubStrategy from 'passport-github2'
 import passport from 'passport'
 import local from 'passport-local'
@@ -13,13 +13,13 @@ import { CustomError } from '../services/errors/custom-error.js'
 const LocalStrategy = local.Strategy
 const { clientID, clientSecret, url } = config
 const cartManager = new CartManagerDBService()
-// ---------------- GITHUB PASSPORT ----------------
+
 export function iniPassPortLocalAndGithub () {
   passport.use(
     'login',
     new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
       try {
-        const user = await userModel.findOne({ email: username })
+        const user = await usersModel.findOne({ email: username })
         if (!user) {
           CustomError.createError({
             name: 'Finding a user Error',
@@ -39,7 +39,7 @@ export function iniPassPortLocalAndGithub () {
           return done(null, false)
         }
         user.last_connection = formattedDate()
-        await userModel.updateOne({ _id: user._id.toString() }, user)
+        await usersModel.updateOne({ _id: user._id.toString() }, user)
         newMessage('success', 'success in logging with passport(the user alredy exists)', {}, '', 200)
         return done(null, user)
       } catch (e) {
@@ -59,7 +59,7 @@ export function iniPassPortLocalAndGithub () {
       async (req, username, password, done) => {
         try {
           const { email, firstName, lastName, age } = req.body
-          const user = await userModel.findOne({ email: username })
+          const user = await usersModel.findOne({ email: username })
           if (user) {
             CustomError.createError({
               name: 'Registering a user Error',
@@ -80,7 +80,7 @@ export function iniPassPortLocalAndGithub () {
             cart: newCart.data._id,
             last_connection: formattedDate()
           }
-          const userCreated = await userModel.create(newUser)
+          const userCreated = await usersModel.create(newUser)
           newMessage('success', 'success in registering with passport', {}, '', 200)
           return done(null, userCreated)
         } catch (e) {
@@ -97,7 +97,7 @@ export function iniPassPortLocalAndGithub () {
       {
         clientID,
         clientSecret,
-        callbackURL: `${url}/api/sessions/githubcallback`
+        callbackURL: `${url}/auth/githubcallback`
       },
       async (accesToken, _, profile, done) => {
         try {
@@ -120,7 +120,7 @@ export function iniPassPortLocalAndGithub () {
             })
           }
           profile.email = emailDetail.email
-          const user = await userModel.findOne({ email: profile.email })
+          const user = await usersModel.findOne({ email: profile.email })
           if (!user) {
             const newCart = await cartManager.addCart()
             const newUser = {
@@ -133,12 +133,12 @@ export function iniPassPortLocalAndGithub () {
               cart: newCart.data._id,
               last_connection: formattedDate()
             }
-            const userCreated = await userModel.create(newUser)
+            const userCreated = await usersModel.create(newUser)
             newMessage('success', 'user logged succesfully with passport github', {}, '', 200)
             return done(null, userCreated)
           } else {
             user.last_connection = formattedDate()
-            await userModel.updateOne({ _id: user._id.toString() }, user)
+            await usersModel.updateOne({ _id: user._id.toString() }, user)
             newMessage('success', 'user logged succesfully with passport github', {}, '', 200)
             return done(null, user)
           }
@@ -153,7 +153,7 @@ export function iniPassPortLocalAndGithub () {
     done(null, user._id)
   })
   passport.deserializeUser(async (id, done) => {
-    const user = await userModel.findById(id)
+    const user = await usersModel.findById(id)
     done(null, user)
   })
 }

@@ -4,10 +4,10 @@ import { fileURLToPath } from 'url'
 import { CustomError } from './errors/custom-error.js'
 import { EErros } from './errors/enums.js'
 import { newMessage, formattedDate } from '../utils/utils.js'
-import { UserManagerDBDAO } from '../DAO/DB/userManagerDB.dao.js'
+import { UsersManagerDBDAO } from '../DAO/DB/usersManagerDB.dao.js'
 import { CodeManagerDBDAO } from '../DAO/DB/codeManagerDB.dao.js'
 import { dataVerification } from '../utils/dataVerification.js'
-const UserManager = new UserManagerDBDAO()
+const UsersManager = new UsersManagerDBDAO()
 const CodeManager = new CodeManagerDBDAO()
 export class AuthService {
   async sendEmail (email, host) {
@@ -31,7 +31,7 @@ export class AuthService {
       const code = await CodeManager.findCodeByMail(email, stringCode)
       const nowMiliseconds = new Date()
       if (code.expire > nowMiliseconds.getTime()) {
-        await UserManager.recoverPass(newPass, email)
+        await UsersManager.recoverPass(newPass, email)
         return newMessage('success', 'password succesfully recovered', {}, '', 200)
       } else {
         CustomError.createError({
@@ -52,12 +52,34 @@ export class AuthService {
         return newMessage('success', 'user is an admin so the last connection cannot be updated', {}, '', 200)
       }
       dataVerification([userMail, 'string'])
-      const user = await UserManager.getUserByUserName(userMail)
+      const user = await UsersManager.getUserByUserName(userMail)
       user.last_connection = formattedDate()
-      await UserManager.updateUser(user)
+      await UsersManager.updateUser(user)
       return newMessage('success', 'user succesfully updated', user, '', 200)
     } catch (e) {
       return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+    }
+  }
+
+  async saveDocuments (identificacionFile, comprobanteDomicilioFile, comprobanteEstadoCuentaFile, userName) {
+    try {
+      dataVerification([identificacionFile?.fieldname, comprobanteDomicilioFile?.fieldname, comprobanteEstadoCuentaFile?.fieldname, 'string'])
+      const user = await this.getUserByUserName(userName)
+      user.data.documents.push({
+        name: identificacionFile.fieldname,
+        reference: identificacionFile.originalname + ' ' + userName
+      }, {
+        name: comprobanteDomicilioFile.fieldname,
+        reference: comprobanteDomicilioFile.originalname + ' ' + userName
+      },
+      {
+        name: comprobanteEstadoCuentaFile.fieldname,
+        reference: comprobanteEstadoCuentaFile.originalname + ' ' + userName
+      })
+      await UsersManager.updateUser(user.data)
+      return newMessage('success', 'successfully saved the documents', user.data, '', 200)
+    } catch (e) {
+      return newMessage('failure', 'Failed to save the documents', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

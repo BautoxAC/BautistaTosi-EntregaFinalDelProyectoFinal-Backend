@@ -1,7 +1,7 @@
 import { ProductManagerDBService } from '../services/products.service.js'
 import { dataResponseToString } from '../utils/dataResponseToString.js'
 const list = new ProductManagerDBService()
-export class ProductsAPIController {
+export class ProductsController {
   async getProducts (req, res) {
     const { limit, page, query, sort } = req.query
     const response = dataResponseToString(await list.getProducts(limit, page, query, sort))
