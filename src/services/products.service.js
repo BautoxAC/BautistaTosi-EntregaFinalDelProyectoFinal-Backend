@@ -41,7 +41,7 @@ export class ProductManagerDBService {
         return newMessage('success', 'Product added successfully', lastAdded, '', 200)
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to create a product', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -89,10 +89,11 @@ export class ProductManagerDBService {
       await ProductManagerDAO.updateProduct(productToUpdate)
       return newMessage(status2, 'Updated successfully' + (messages).toString(), productToUpdate, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to update a product', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
+  /* tendria que ser cambiado... */
   async getProducts (limit, page, query, sort) {
     const res = (status, payload, restPaginate) => {
       let prevLink = `/home?limit=${limit || ''}&category=${query || ''}&sort=${sort || ''}&page=`
@@ -127,7 +128,7 @@ export class ProductManagerDBService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to get the product', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -153,7 +154,7 @@ export class ProductManagerDBService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to delete the product', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

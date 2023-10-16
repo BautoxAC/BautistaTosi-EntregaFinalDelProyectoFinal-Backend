@@ -22,7 +22,7 @@ export class ChatManagerDBService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'an error ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to add a message', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -31,7 +31,7 @@ export class ChatManagerDBService {
       const messages = await ChatManagerDB.getMessages()
       return newMessage('success', 'Messages got', messages, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Messages not found', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to get the messages', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

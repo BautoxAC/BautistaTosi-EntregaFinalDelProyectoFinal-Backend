@@ -70,10 +70,14 @@ export class AuthController {
   }
 
   async sendEmail (req, res) {
-    const { email } = req.body
-    const host = req.get('host')
-    const response = dataResponseToString(await authServiceControlling.sendEmail(email, host))
-    return res.status(200).render('response', { response })
+    try {
+      const { email } = req.body
+      const host = req.get('host')
+      const response = dataResponseToString(await authServiceControlling.sendEmail(email, host))
+      return res.status(200).render('response', { response })
+    } catch (e) {
+      return res.render('error', { error: e.message })
+    }
   }
 
   renderRecover (req, res) {
@@ -82,9 +86,13 @@ export class AuthController {
   }
 
   async passRecover (req, res) {
-    const { code: stringCode, email, password: newPass } = req.query
-    const response = dataResponseToString(await authServiceControlling.passRecover(newPass, stringCode, email))
-    return res.status(200).render('response', { response })
+    try {
+      const { code: stringCode, email, password: newPass } = req.query
+      const response = dataResponseToString(await authServiceControlling.passRecover(newPass, stringCode, email))
+      return res.status(200).render('response', { response })
+    } catch (e) {
+      return res.render('error', { error: e.message })
+    }
   }
 
   redirectHome (req, res) {
@@ -93,19 +101,27 @@ export class AuthController {
   }
 
   async RenderCurrentSession (req, res) {
-    const CurrentUserDTO = new CurrentUser(req.session.user)
-    const userId = req.session.user._id
-    const user = await UsersManager.getUserByUserName(req.session.user.email)
-    const documents = user.data?.documents
-    return res.render('profile', { CurrentUserDTO, userId, documents })
+    try {
+      const CurrentUserDTO = new CurrentUser(req.session.user)
+      const userId = req.session.user._id
+      const user = await UsersManager.getUserByUserName(req.session.user.email)
+      const documents = user.data?.documents
+      return res.render('profile', { CurrentUserDTO, userId, documents })
+    } catch (e) {
+      return res.render('error', { error: e.message })
+    }
   }
 
   async saveDocuments (req, res) {
-    const identificacionFile = req.files?.identificacion?.[0]
-    const comprobanteDomicilioFile = req.files?.comprobanteDomicilio?.[0]
-    const comprobanteEstadoCuentaFile = req.files?.comprobanteEstadoCuenta?.[0]
-    const userName = req.session.user.email
-    const response = dataResponseToString(await authServiceControlling.saveDocuments(identificacionFile, comprobanteDomicilioFile, comprobanteEstadoCuentaFile, userName))
-    return res.status(200).render('response', { response })
+    try {
+      const identificacionFile = req.files?.identificacion?.[0]
+      const comprobanteDomicilioFile = req.files?.comprobanteDomicilio?.[0]
+      const comprobanteEstadoCuentaFile = req.files?.comprobanteEstadoCuenta?.[0]
+      const userName = req.session.user.email
+      const response = dataResponseToString(await authServiceControlling.saveDocuments(identificacionFile, comprobanteDomicilioFile, comprobanteEstadoCuentaFile, userName))
+      return res.status(200).render('response', { response })
+    } catch (e) {
+      return res.render('error', { error: e.message })
+    }
   }
 }

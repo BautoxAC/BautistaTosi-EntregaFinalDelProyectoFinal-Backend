@@ -2,8 +2,12 @@ import { ChatManagerDBService } from '../services/chat.service.js'
 const ChatManager = new ChatManagerDBService()
 export class ChatController {
   async getMessages (req, res) {
-    const user = req.session.user.email
-    const { data } = await ChatManager.getMessages()
-    return res.render('chat', { messages: data.reverse(), user })
+    try {
+      const user = req.session.user.email
+      const { data } = await ChatManager.getMessages()
+      return res.render('chat', { messages: data.reverse(), user })
+    } catch (e) {
+      return res.render('error', { error: e.message })
+    }
   }
 }

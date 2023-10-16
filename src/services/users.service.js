@@ -15,7 +15,7 @@ export class UsersManagerDBService {
       const user = UsersManagerDB.addUsser(userPassword, userName)
       return newMessage('success', 'user Created successfully', user, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to create a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to create a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -24,7 +24,7 @@ export class UsersManagerDBService {
       const user = await UsersManagerDB.getUserByUserName(userName)
       return newMessage('success', 'user Found successfully', user, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to find a user', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -47,7 +47,7 @@ export class UsersManagerDBService {
       await UsersManagerDB.updateUser(user)
       return newMessage('success', 'role changed successfully', user, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to change a role', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to change a role', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -60,7 +60,7 @@ export class UsersManagerDBService {
       })
       return newMessage('success', 'successfully found the users', usersDTO, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to get the users', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to get the users', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -79,7 +79,7 @@ export class UsersManagerDBService {
       }
       return newMessage('success', 'successfully deleted the inactive users', usersDeleted, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to delete the users', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to delete the users', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -98,7 +98,7 @@ export class UsersManagerDBService {
       `)
       return newMessage('success', 'successfully deleted the user', userDeleted, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to delete a user with his/her cart', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to delete a user with his/her cart', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

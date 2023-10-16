@@ -22,7 +22,7 @@ export class AuthService {
       `)
       return newMessage('success', 'Code added and email send successfully', {}, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to send the email', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -42,7 +42,7 @@ export class AuthService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'The password could not be recovered', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -57,7 +57,7 @@ export class AuthService {
       await UsersManager.updateUser(user)
       return newMessage('success', 'user succesfully updated', user, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to close the session', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -79,7 +79,7 @@ export class AuthService {
       await UsersManager.updateUser(user.data)
       return newMessage('success', 'successfully saved the documents', user.data, '', 200)
     } catch (e) {
-      return newMessage('failure', 'Failed to save the documents', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to save the documents', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

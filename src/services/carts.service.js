@@ -22,7 +22,7 @@ export class CartManagerDBService {
         })
       }
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to fin a cart', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -31,7 +31,7 @@ export class CartManagerDBService {
       const lastAdded = await CartManagerDAO.addCart()
       return newMessage('success', 'cart added successfully', lastAdded, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to create a cart for the user', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -86,7 +86,7 @@ export class CartManagerDBService {
       await CartManagerDAO.addProduct(cart)
       return messageReturn
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to add a product to a cart', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -99,7 +99,7 @@ export class CartManagerDBService {
       await CartManagerDAO.deleteProduct(cartFindId)
       return newMessage('success', 'product deleted', cartFindId, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to delete a product', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -138,7 +138,7 @@ export class CartManagerDBService {
       await CartManagerDAO.addNewProducts(cartFindId)
       return newMessage('success', 'products updated', cartFindId, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to add the products to the cart', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -149,7 +149,7 @@ export class CartManagerDBService {
       await CartManagerDAO.deleteAllProducts(cartFindId)
       return newMessage('success', 'products emptied', cartFindId, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', '', fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to delete all the products from the cart', '', fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -175,7 +175,7 @@ export class CartManagerDBService {
       }
       return newMessage('success', 'the ticket of the purchase was created', { ticket, productsCouldNotBuy }, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', e.toString(), fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to create a ticket of the buy', e.toString(), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
@@ -184,7 +184,7 @@ export class CartManagerDBService {
       const cart = await CartManagerDAO.deleteCart(idCart)
       return newMessage('success', 'cart deleted', cart, '', 200)
     } catch (e) {
-      return newMessage('failure', 'A problem ocurred', '', fileURLToPath(import.meta.url), e?.code)
+      throw newMessage('failure', 'Failed to delete a cart', '', fileURLToPath(import.meta.url), e?.code)
     }
   }
 }

@@ -4,22 +4,30 @@ const UsersManager = new UsersManagerDBService()
 const list = new ProductManagerDBService()
 export class HomeController {
   async renderAllProducts (req, res) {
-    const { limit, page, query, sort } = req.query
-    const { email, role, cart } = req.session.user
-    const userId = await UsersManager.getUserByUserName(email)
-    const pageInfo = await list.getProducts(limit, page, query, sort)
-    return res.status(200).render('home', {
-      ...pageInfo,
-      email,
-      cart,
-      role,
-      userId: userId?.data?._id
-    })
+    try {
+      const { limit, page, query, sort } = req.query
+      const { email, role, cart } = req.session.user
+      const userId = await UsersManager.getUserByUserName(email)
+      const pageInfo = await list.getProducts(limit, page, query, sort)
+      return res.status(200).render('home', {
+        ...pageInfo,
+        email,
+        cart,
+        role,
+        userId: userId?.data?._id
+      })
+    } catch (e) {
+      return res.render('error', { error: e.message })
+    }
   }
 
   async renderDetails (req, res) {
-    const productId = req.params.pid
-    const detailsProduct = await list.getProductById(productId)
-    return res.status(200).render('details', { detailsProduct: detailsProduct.data })
+    try {
+      const productId = req.params.pid
+      const detailsProduct = await list.getProductById(productId)
+      return res.status(200).render('details', { detailsProduct: detailsProduct.data })
+    } catch (e) {
+      return res.render('error', { error: e.message })
+    }
   }
 }
