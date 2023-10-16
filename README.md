@@ -54,16 +54,16 @@ Documentacion mas detallada de la página
 
 ### /api/products
 
-- `GET /` 
-Lista de productos con los datos de paginacion
-- `GET /:pid` 
-Producto por id
-- `POST /` 
-Crea un producto
-- `PUT /:pid` 
-Actualiza un producto
-- `DEL /:pid`
-Elimina un producto
+`GET /` 
+    Lista de productos con los datos de paginacion
+`GET /:pid` 
+    Producto por id
+`POST /` 
+    Crea un producto
+`PUT /:pid` 
+    Actualiza un producto
+`DEL /:pid`
+    Elimina un producto
 
 
 ### /api/carts
