@@ -55,32 +55,53 @@ Documentacion mas detallada de la página
 ### /api/products
 
 `GET /` 
+
 - Lista de productos con los datos de paginacion
+
 `GET /:pid`
+
 - Producto por id
+
 `POST /`
+
 - Crea un producto
-`PUT /:pid` 
+
+`PUT /:pid`
+
 - Actualiza un producto
+
 `DELETE /:pid`
+
 - Elimina un producto
 
 
 ### /api/carts
 
 `GET /` 
+
 - Trae tu carrito por la sesion
+
 `POST /`
+
 - Crea un carrito
+
 `POST /:cid/products/:pid`
+
 - Añade un producto a un carrito
-`DELETE /:cid/products/:pid` 
+
+`DELETE /:cid/products/:pid`
+
 - Elimina un producto a un carrito
+
 `DELETE /:cid`
+
 - Elimina todos los productos de un carrito
 `PUT /:cid`
+
 - Añade varios productos a un carrito
+
 `POST /:cid/purchase`
+
 - Crea un ticket de compra de lo que habia en el producto
 
 
