@@ -27,8 +27,11 @@ Este proyecto es un API básica que sigue las consignas de la tercera preEntrega
 
 ## Para iniciar el proyectocon nodeJS
 
-### `npm ci`
-- Instala las dependencias necesarias
+### `npm i -d`
+- Instala las dependencias necesarias para hacer development
+
+### `npm i`
+- Instala las dependencias necesarias para iniciar la app
 
 ### `npm start`
 - Inicia el Servidor en [http://localhost:8080]
@@ -40,7 +43,6 @@ Este proyecto es un API básica que sigue las consignas de la tercera preEntrega
 
 ### `npm run testApp`
 - Inicia los tests de toda la app pedida por la entrega
-
 
 ## Documentación y listado de las Dependecias:
 
