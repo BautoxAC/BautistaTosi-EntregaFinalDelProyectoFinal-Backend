@@ -17,10 +17,11 @@ Este proyecto es un API básica que sigue las consignas de la tercera preEntrega
 - [x] Utilizar el chat
 - [x] Crear productos 
 
-## Link de postman (donde estan se encuentran los endpoints del API)
+## Link del deploy
 ```
-[https://documenter.getpostman.com/view/27127572/2s93eYTrfS]
+[https://pf-backend-bautistatosi.onrender.com]
 ```
+
 
 ## Esquema del DotEnv:
 - Se encuentran dos ejemplos de como son los dos nombres que utiliza la app para funcionar y sus variables necesarias
@@ -44,21 +45,134 @@ Este proyecto es un API básica que sigue las consignas de la tercera preEntrega
 ### `npm run testApp`
 - Inicia los tests de toda la app pedida por la entrega
 
-## Documentación y listado de las Dependecias:
+## Endpoints de la app
 
-1. [bcrypt](https://www.npmjs.com/package/bcrypt)
-2. [Commander](https://www.npmjs.com/package/bcrypt)
-3. [Connect-mongo](https://www.npmjs.com/package/connect-mongo)
-4. [dotenv](https://www.npmjs.com/package/dotenv)
-5. [Express](https://expressjs.com/es/)
-6. [Express-compression](https://expressjs.com/en/resources/middleware/compression.html)
-7. [Express-handlebars](https://www.npmjs.com/package/express-handlebars)
-8. [Express-session](https://www.npmjs.com/package/express-session)
-9. [Mongoose](https://mongoosejs.com)
-10. [Mongoose-paginate-v2](https://www.npmjs.com/package/mongoose-paginate-v2)
-11. [multer](https://www.npmjs.com/package/multer)
-12. [passport](https://www.passportjs.org)
-13. [passport-github2](passport-github2)
-14. [passport-local](passport-local)
-15. [socket.io](https://socket.io)
-16. [uuid](https://www.npmjs.com/package/uuid)
+### /apidocs
+
+`GET /` 
+Documentacion mas detallada de la página
+
+### /api/products
+
+`GET /` 
+Lista de productos con los datos de paginacion
+`GET /:pid` 
+Producto por id
+`POST /` 
+Crea un producto
+`PUT /:pid` 
+Actualiza un producto
+`DEL /:pid`
+Elimina un producto
+
+
+### /api/carts
+
+### /api/users
+
+### /loggerTest
+
+### /mockingproducts
+
+### /home
+
+### /carts
+
+### /auth
+#
+/chat
+
+## Get list of Things
+
+### Request
+
+`GET /thing/`
+
+    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 2
+
+    []
+
+## Create a new Thing
+
+### Request
+
+`POST /thing/`
+
+    curl -i -H 'Accept: application/json' -d 'name=Foo&status=new' http://localhost:7000/thing
+
+### Response
+
+    HTTP/1.1 201 Created
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 201 Created
+    Connection: close
+    Content-Type: application/json
+    Location: /thing/1
+    Content-Length: 36
+
+    {"id":1,"name":"Foo","status":"new"}
+
+## Get a specific Thing
+
+### Request
+
+`GET /thing/id`
+
+    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+
+### Response
+
+    HTTP/1.1 200 OK
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 200 OK
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 36
+
+    {"id":1,"name":"Foo","status":"new"}
+
+## Get a non-existent Thing
+
+### Request
+
+`GET /thing/id`
+
+    curl -i -H 'Accept: application/json' http://localhost:7000/thing/9999
+
+### Response
+
+    HTTP/1.1 404 Not Found
+    Date: Thu, 24 Feb 2011 12:36:30 GMT
+    Status: 404 Not Found
+    Connection: close
+    Content-Type: application/json
+    Content-Length: 35
+
+    {"status":404,"reason":"Not found"}
+
+## Create another new Thing
+
+### Request
+
+`POST /thing/`
+
+    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:7000/thing
+
+### Response
+
+    HTTP/1.1 201 Created
+    Date: Thu, 24 Feb 2011 12:36:31 GMT
+    Status: 201 Created
+    Connection: close
+    Content-Type: application/json
+    Location: /thing/2
+    Content-Length: 35

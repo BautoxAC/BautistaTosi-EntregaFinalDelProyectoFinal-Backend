@@ -22,8 +22,9 @@ import { iniPassPortLocalAndGithub } from './config/passport.config.js'
 import { cartViewRouter } from './routes/cartView.router.js'
 import { chatRouter } from './routes/chat.router.js'
 import compression from 'express-compression'
-
 const { sessionSecret, mongoUrl, url, port } = config
+
+// Initialize the app
 const app = express()
 const httpServer = app.listen(port, () => {
   console.log(`Example available in ${url}`)
@@ -44,6 +45,7 @@ app.engine('handlebars', handlebars.engine())
 app.set('views', path.join(__dirname, 'views'))
 app.set('view engine', 'handlebars')
 
+// Initialize Sessions
 app.use(
   session({
     store: MongoStore.create({ mongoUrl, ttl: 7200 }),
@@ -64,13 +66,11 @@ connectSocketServer(httpServer)
 // Config Swagger
 const specs = swaggerJSDoc(swaggerOptions)
 
-// Rutes: API REST WITH JSON
+// Rutes: API REST WITH Handlebars
 app.use('/api/products', productsRouter)
 app.use('/api/carts', cartsAPIRouter)
 app.use('/api/users', usersRouter)
 app.use('/loggerTest', loggerTestRouter)
-
-// Rutes: HTML/HandleBars
 app.use('/mockingproducts', mockingProducts)
 app.use('/home', homeRouter)
 app.use('/carts', cartViewRouter)
@@ -85,8 +85,9 @@ app.use(errorHandler)
 // DOCS
 app.use('/apidocs', swaggerUiExpress.serve, swaggerUiExpress.setup(specs))
 
+//
 app.get('*', (req, res) => {
-  return res.status(404).json({
-    status: 'error', msg: 'no encontrado', data: ''
+  return res.status(404).render('error', {
+    error: 'page not found'
   })
 })
