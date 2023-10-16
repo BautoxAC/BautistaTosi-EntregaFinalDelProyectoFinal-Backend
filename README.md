@@ -55,14 +55,19 @@ Documentacion mas detallada de la página
 ### /api/products
 
 `GET /` 
+
     Lista de productos con los datos de paginacion
-`GET /:pid` 
+`GET /:pid`
+
     Producto por id
-`POST /` 
+`POST /`
+
     Crea un producto
 `PUT /:pid` 
+
     Actualiza un producto
 `DEL /:pid`
+
     Elimina un producto
 
 
