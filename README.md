@@ -1,5 +1,5 @@
 # Explicación
-Este proyecto es un API básica que sigue las consignas de la tercera preEntrega del proyecto final de CoderHouse funcionando con:
+Este proyecto es un API de un ecommerce que sigue las consignas de las del proyecto final de CoderHouse funcionando con:
 - [x] MongoDB
 - [x] Handlebars
 - [x] NodeJS
@@ -13,11 +13,10 @@ Este proyecto es un API básica que sigue las consignas de la tercera preEntrega
 [https://pf-backend-bautistatosi.onrender.com]
 ```
 
-
 ## Esquema del DotEnv:
 - Se encuentran dos ejemplos de como son los dos nombres que utiliza la app para funcionar y sus variables necesarias
 
-## Para iniciar el proyectocon nodeJS
+## Para iniciar el proyecto con nodeJS
 
 ### `npm i -d`
 - Instala las dependencias necesarias para hacer development
@@ -97,6 +96,7 @@ Documentacion mas detallada de la página
 `DELETE /:cid`
 
 - Elimina todos los productos de un carrito
+
 `PUT /:cid`
 
 - Añade varios productos a un carrito
