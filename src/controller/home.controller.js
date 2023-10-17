@@ -10,7 +10,7 @@ export class HomeController {
       const userId = await UsersManager.getUserByUserName(email)
       const pageInfo = await list.getProducts(limit, page, query, sort)
       return res.status(200).render('home', {
-        ...pageInfo,
+        ...pageInfo.data,
         email,
         cart,
         role,

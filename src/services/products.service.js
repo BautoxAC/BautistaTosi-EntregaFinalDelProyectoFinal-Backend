@@ -106,11 +106,9 @@ export class ProductManagerDBService {
     }
     try {
       const { docs, rest } = await ProductManagerDAO.getProducts(limit, page, query, sort)
-      newMessage('success', 'the products were found correctly', {}, '', 200)
-      return res('success', docs, rest)
+      return newMessage('success', 'the products were found correctly', res('success', docs, rest), '', 200)
     } catch (e) {
-      newMessage('failure', 'the products were not found', {}, fileURLToPath(import.meta.url), e?.code)
-      return res(e, {}, {})
+      throw newMessage('failure', 'the products were not found', res(e, {}, {}), fileURLToPath(import.meta.url), e?.code)
     }
   }
 
