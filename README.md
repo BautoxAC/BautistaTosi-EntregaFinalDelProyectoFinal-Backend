@@ -8,15 +8,6 @@ Este proyecto es un API básica que sigue las consignas de la tercera preEntrega
 - [x] GIT
 - [x] DotEnv
 
-## Funcionalidades:
-- [x] Iniciar y registrar tu sesión
-- [x] Manejar tu carrito
-- [x] Comprar tu carrito
-- [x] Ver los productos disponibles
-- [x] Ver tu perfil
-- [x] Utilizar el chat
-- [x] Crear productos 
-
 ## Link del deploy
 ```
 [https://pf-backend-bautistatosi.onrender.com]
@@ -51,6 +42,16 @@ Este proyecto es un API básica que sigue las consignas de la tercera preEntrega
 
 `GET /` 
 Documentacion mas detallada de la página
+
+### /home
+
+`GET /` 
+
+- Renderiza la pagina principal de la pagina
+
+`GET /:pid`
+
+- Renderiza los detalles de un producto
 
 ### /api/products
 
@@ -107,109 +108,104 @@ Documentacion mas detallada de la página
 
 ### /api/users
 
+`GET /`
+
+- Renderiza lista de usuarios
+
+`POST /premium/:uname`
+
+- Modifica el rol de un usuario para volverlo a premium
+
+`DELETE /`
+
+- Elimina todos los usuarios inactivos
+
+`DELETE /:uname`
+
+- Elimina un usuario
+
 ### /loggerTest
+
+`GET /`
+
+- Prueba los logger
 
 ### /mockingproducts
 
-### /home
+`GET /` 
+
+- Trae 100 usuarios falsos creados por FakerJS
 
 ### /carts
 
+`GET /:cid`
+
+- Renderiza un carrito
+
 ### /auth
-#
-/chat
 
-## Get list of Things
+`GET /login` 
 
-### Request
+- Vista de formulario de login
 
-`GET /thing/`
+`POST /login`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/
+- Login con passport local
 
-### Response
+`GET /faillogin`
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 2
+- Vista de error del login
 
-    []
+`GET /register`
 
-## Create a new Thing
+- Vista de formulario de registro
 
-### Request
+`POST /register`
 
-`POST /thing/`
+- Registro con passport local
 
-    curl -i -H 'Accept: application/json' -d 'name=Foo&status=new' http://localhost:7000/thing
+`GET /failregister`
 
-### Response
+- Vista de error del register
 
-    HTTP/1.1 201 Created
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 201 Created
-    Connection: close
-    Content-Type: application/json
-    Location: /thing/1
-    Content-Length: 36
+`GET /currentView`
 
-    {"id":1,"name":"Foo","status":"new"}
+- Vista de información sobre el usuario actual (sesion)
 
-## Get a specific Thing
+`GET /github`
 
-### Request
+- Login con github
 
-`GET /thing/id`
+`GET /githubcallback`
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/1
+- Callback de auth con github
 
-### Response
+`GET /logout`
 
-    HTTP/1.1 200 OK
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 200 OK
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 36
+- Cierra la sesion
 
-    {"id":1,"name":"Foo","status":"new"}
+`GET /administracion`
 
-## Get a non-existent Thing
+- Vista de info secreta de la pagina
 
-### Request
+`GET /passrecover`
 
-`GET /thing/id`
+- Vista para insertar tu mail y que te envien un link para recuperar tu contraseña, y cambiarla
 
-    curl -i -H 'Accept: application/json' http://localhost:7000/thing/9999
+`POST /sendemail`
 
-### Response
+- Envia el email con el link de recuperacion de contraseña
 
-    HTTP/1.1 404 Not Found
-    Date: Thu, 24 Feb 2011 12:36:30 GMT
-    Status: 404 Not Found
-    Connection: close
-    Content-Type: application/json
-    Content-Length: 35
+`POST /:uid/documents`
 
-    {"status":404,"reason":"Not found"}
+- Sube los documentos de un usuario necesarios para ser premium
 
-## Create another new Thing
+`PUT /passrecover`
 
-### Request
+- Cambia la contraseña de un usuario
 
-`POST /thing/`
+### /chat
 
-    curl -i -H 'Accept: application/json' -d 'name=Bar&junk=rubbish' http://localhost:7000/thing
+`GET /`
 
-### Response
-
-    HTTP/1.1 201 Created
-    Date: Thu, 24 Feb 2011 12:36:31 GMT
-    Status: 201 Created
-    Connection: close
-    Content-Type: application/json
-    Location: /thing/2
-    Content-Length: 35
+- Vista de un chat que podes ves y leer mensajes de un chat con socket
