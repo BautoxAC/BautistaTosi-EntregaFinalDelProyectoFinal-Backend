@@ -6,6 +6,7 @@ Este proyecto es un API de un ecommerce que sigue las consignas de las del proye
 - [x] Css
 - [x] ExpressJs
 - [x] GIT
+- [x] ESLint
 - [x] DotEnv
 
 ## Link del deploy
@@ -25,15 +26,15 @@ Este proyecto es un API de un ecommerce que sigue las consignas de las del proye
 - Instala las dependencias necesarias para iniciar la app
 
 ### `npm start`
-- Inicia el Servidor en [http://localhost:8080]
+- Inicia el Servidor para la pagina de deploy
 - En la colección de producción de mongoDB
 
 ### `npm run dev`
-- Inicia el Servidor en [http://localhost:3000]
+- Inicia el Servidor en [http://localhost:8080]
 - En la colección de prueba de mongoDB
 
 ### `npm run testApp`
-- Inicia los tests de toda la app pedida por la entrega
+- Inicia los tests de una parte de la app
 
 ## Endpoints de la app
 
