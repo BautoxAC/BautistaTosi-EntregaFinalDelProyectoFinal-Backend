@@ -39,8 +39,9 @@ Este proyecto es un API de un ecommerce que sigue las consignas de las del proye
 
 ### /apidocs
 
-`GET /` 
-Documentacion mas detallada de la página
+`GET /`
+
+- Documentacion mas detallada de la página
 
 ### /home
 
