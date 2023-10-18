@@ -3,12 +3,14 @@ import { ChatManagerDBDAO } from '../DAO/DB/chatManagerDB.dao.js'
 import { UsersManagerDBDAO } from '../DAO/DB/usersManagerDB.dao.js'
 import { CustomError } from './errors/custom-error.js'
 import { EErros } from './errors/enums.js'
+import { dataVerification } from '../utils/dataVerification.js'
 import { fileURLToPath } from 'url'
 const UsersManagerDB = new UsersManagerDBDAO()
 const ChatManagerDB = new ChatManagerDBDAO()
 export class ChatManagerDBService {
   async addMessage (message, userName) {
     try {
+      dataVerification([userName, message, 'string'])
       const user = await UsersManagerDB.getUserByUserName(userName)
       if (user) {
         const lastAdded = await ChatManagerDB.addMessage(message, userName)

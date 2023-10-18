@@ -2,6 +2,7 @@ import { ProductManagerDBDAO } from '../DAO/DB/productManagerDB.dao.js'
 import { newMessage } from '../utils/utils.js'
 import { CustomError } from './errors/custom-error.js'
 import { EErros } from './errors/enums.js'
+import { dataVerification } from '../utils/dataVerification.js'
 import { fileURLToPath } from 'url'
 import { sendMail } from '../utils/nodemailer.js'
 const ProductManagerDAO = new ProductManagerDBDAO()
@@ -11,30 +12,16 @@ export class ProductManagerDBService {
       if (owner === 'adminCoder@coder.com') {
         owner = 'admin'
       }
-      const product = { title, description, price: Math.round(Number(price)), thumbnails: thumbnails !== undefined && [thumbnails], code, stock: Number(stock), category, owner }
-      let addPro = true
-      const productValues = Object.values(product)
-      for (const prop of productValues) {
-        if (!prop) {
-          addPro = false
-          break
-        }
-      }
+      dataVerification([title, description, category, code, owner, thumbnails, 'string'], [Math.round(Number(price)), Number(stock), 'number'], [[thumbnails], 'array'])
+      const product = { title, description, price, thumbnails, code, stock, category, owner }
       const products = await this.getProducts()
-      const codeVerificator = products.payload.some((productToFind) => productToFind.code === code)
+      const codeVerificator = products.data.payload.some((productToFind) => productToFind.code === code)
       if (codeVerificator) {
         CustomError.createError({
           name: 'Product creation error',
           cause: 'The code was equal to another one in the database',
           message: 'Error trying to create product',
           code: EErros.INCORRECT_CREDENTIALS_ERROR
-        })
-      } else if (!addPro) {
-        CustomError.createError({
-          name: 'Product creation error',
-          cause: 'Error, data is incomplete please provide more data and the stock and the price must be numbers',
-          message: 'Error trying to create product',
-          code: EErros.INVALID_TYPES_ERROR
         })
       } else {
         const lastAdded = await ProductManagerDAO.addProduct(product)
@@ -47,20 +34,13 @@ export class ProductManagerDBService {
 
   async updateProduct (id, propsReceivedToUpdate) {
     try {
+      dataVerification([id, 'string'], [propsReceivedToUpdate, 'object'])
       let productToUpdate = await this.getProductById(id)
       productToUpdate = productToUpdate.data
       const entriesRecieved = Object.entries(propsReceivedToUpdate)
       const valuesToUpdate = Object.keys(productToUpdate)
       const dataTypes = Object.entries(productToUpdate).map((prop) => ({ key: prop[0], type: prop[0] === 'thumbnails' ? 'string' : typeof (prop[1]) }))
       const messages = []
-      if (!productToUpdate || Array.isArray(propsReceivedToUpdate)) {
-        CustomError.createError({
-          name: 'Product update error',
-          cause: 'The product was not found or the data is an Array',
-          message: 'Error trying to update product',
-          code: EErros.INVALID_TYPES_ERROR
-        })
-      }
       const propToUpdateFound = entriesRecieved.map((entry) => {
         const status = valuesToUpdate.some((propUpdate) => entry[0] === propUpdate && entry[0] !== 'id' && entry[0] !== 'status')
         return { entries: { key: entry[0], value: entry[1] }, status, type: typeof (entry[1]) }
@@ -93,7 +73,6 @@ export class ProductManagerDBService {
     }
   }
 
-  /* tendria que ser cambiado... */
   async getProducts (limit, page, query, sort) {
     const res = (status, payload, restPaginate) => {
       let prevLink = `/home?limit=${limit || ''}&category=${query || ''}&sort=${sort || ''}&page=`
@@ -105,6 +84,7 @@ export class ProductManagerDBService {
       }
     }
     try {
+      dataVerification([query, 'string'], [limit, page, sort, 'number'])
       const { docs, rest } = await ProductManagerDAO.getProducts(limit, page, query, sort)
       return newMessage('success', 'the products were found correctly', res('success', docs, rest), '', 200)
     } catch (e) {
@@ -114,6 +94,7 @@ export class ProductManagerDBService {
 
   async getProductById (id) {
     try {
+      dataVerification([id, 'string'])
       const productFindId = await ProductManagerDAO.getProductById(id)
       if (productFindId) {
         return newMessage('success', 'Product found successfully', productFindId, '', 200)
@@ -132,6 +113,7 @@ export class ProductManagerDBService {
 
   async deleteProduct (id, owner) {
     try {
+      dataVerification([id, owner, 'string'])
       const product = await this.getProductById(id)
       if (owner === product.data.owner || owner === 'adminCoder@coder.com') {
         const productToDelete = await ProductManagerDAO.deleteProduct(id)

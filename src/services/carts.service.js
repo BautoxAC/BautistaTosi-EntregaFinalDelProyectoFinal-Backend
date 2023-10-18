@@ -3,12 +3,14 @@ import { newMessage } from '../utils/utils.js'
 import { CustomError } from './errors/custom-error.js'
 import { EErros } from './errors/enums.js'
 import { ProductManagerDBService } from './products.service.js'
+import { dataVerification } from '../utils/dataVerification.js'
 import { fileURLToPath } from 'url'
 const listProducts = new ProductManagerDBService()
 const CartManagerDAO = new CartManagerDBDAO()
 export class CartManagerDBService {
   async getCartById (id) {
     try {
+      dataVerification([id, 'string'])
       const cartFindId = await CartManagerDAO.getCartById(id)
       const totalPrices = cartFindId.products.reduce((acc, pro) => acc + parseInt(pro.idProduct.price * pro.quantity), 0)
       if (cartFindId) {
@@ -37,6 +39,7 @@ export class CartManagerDBService {
 
   async addProduct (idCart, idProduct, owner) {
     try {
+      dataVerification([idCart, idProduct, owner, 'string'])
       const cart = await CartManagerDAO.getCartById(idCart)
       if (!cart) {
         CustomError.createError({
@@ -92,6 +95,7 @@ export class CartManagerDBService {
 
   async deleteProduct (idCart, idProduct) {
     try {
+      dataVerification([idCart, idProduct, 'string'])
       const cartFindId = await CartManagerDAO.getCartById(idCart)
       const cartProducts = cartFindId.products
       const positionProduct = cartProducts.indexOf(cartFindId.products.find(pro => pro.idProduct === idProduct))
@@ -105,14 +109,7 @@ export class CartManagerDBService {
 
   async addNewProducts (idCart, products) {
     try {
-      if (!Array.isArray(products) && products.length === 0) {
-        CustomError.createError({
-          name: 'Adding an array to cart error',
-          cause: 'You must pass an array and at least one product',
-          message: 'Error the products could not be agretated',
-          code: EErros.INVALID_TYPES_ERROR
-        })
-      }
+      dataVerification([idCart, 'string'], [products, 'array'], [...products, 'object'])
       for (const product of products) {
         const productExist = await listProducts.getProductById(product.id)
         if (!productExist) {
@@ -144,6 +141,7 @@ export class CartManagerDBService {
 
   async deleteAllProducts (idCart) {
     try {
+      dataVerification([idCart, 'string'])
       const cartFindId = await CartManagerDAO.getCartById(idCart)
       cartFindId.products = []
       await CartManagerDAO.deleteAllProducts(cartFindId)
@@ -155,6 +153,7 @@ export class CartManagerDBService {
 
   async createATicketToBuy (idCart, purchaser) {
     try {
+      dataVerification([idCart, purchaser, 'string'])
       const cart = await this.getCartById(idCart)
       const productsCouldBuy = []
       const productsCouldNotBuy = []
@@ -181,6 +180,7 @@ export class CartManagerDBService {
 
   async deleteCart (idCart) {
     try {
+      dataVerification([idCart, 'string'])
       const cart = await CartManagerDAO.deleteCart(idCart)
       return newMessage('success', 'cart deleted', cart, '', 200)
     } catch (e) {

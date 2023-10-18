@@ -6,6 +6,7 @@ comentarios.txt
 .eslintrc.cjs
 .env.production
 /.vscode
+test.js
 
 # Logs
 logs

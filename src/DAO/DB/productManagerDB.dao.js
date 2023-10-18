@@ -33,7 +33,7 @@ export class ProductManagerDBDAO {
 
   async getProducts (limit, page, query, sort) {
     try {
-      const { docs, ...rest } = await Productmodel.paginate({ [query && 'category']: query }, { limit: limit || 10, page: page || 1, sort: { price: sort || null }, lean: true })
+      const { docs, ...rest } = await Productmodel.paginate({ [query && 'category']: query }, { limit, page, sort: { price: sort }, lean: true })
       return { docs, rest }
     } catch (e) {
       CustomError.createError({

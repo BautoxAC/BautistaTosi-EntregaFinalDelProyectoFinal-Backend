@@ -5,7 +5,7 @@ export class ProductsController {
   async getProducts (req, res) {
     try {
       const { limit, page, query, sort } = req.query
-      const response = dataResponseToString(await list.getProducts(limit, page, query, sort))
+      const response = dataResponseToString(await list.getProducts(limit || 10, page || 1, query, sort || null))
       return res.status(200).render('response', { response })
     } catch (e) {
       return res.render('error', { error: e.message })

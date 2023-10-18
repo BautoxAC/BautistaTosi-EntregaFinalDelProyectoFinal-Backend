@@ -12,6 +12,7 @@ const UsersManagerDB = new UsersManagerDBDAO()
 export class UsersManagerDBService {
   async addUsser (userPassword, userName) {
     try {
+      dataVerification([userPassword, userName, 'string'])
       const user = UsersManagerDB.addUsser(userPassword, userName)
       return newMessage('success', 'user Created successfully', user, '', 200)
     } catch (e) {
@@ -21,6 +22,7 @@ export class UsersManagerDBService {
 
   async getUserByUserName (userName) {
     try {
+      dataVerification([userName, 'string'])
       const user = await UsersManagerDB.getUserByUserName(userName)
       return newMessage('success', 'user Found successfully', user, '', 200)
     } catch (e) {
@@ -30,6 +32,7 @@ export class UsersManagerDBService {
 
   async changerole (userName) {
     try {
+      dataVerification([userName, 'string'])
       const user = this.getUserByUserName(userName)
       if (user?.data?.documents.length !== 3) {
         CustomError.createError({
@@ -89,6 +92,7 @@ export class UsersManagerDBService {
         const user = await this.getUserByUserName(userName)
         cartId = user.data.cart
       }
+      dataVerification([userName, cartId, 'string'])
       await CartManager.deleteCart(cartId)
       const userDeleted = await UsersManagerDB.deleteUser(userName)
       await sendMail(userDeleted.userDeleted.email, 'Eliminación de cuenta', `

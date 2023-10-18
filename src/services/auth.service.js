@@ -3,15 +3,16 @@ import { sendMail } from '../utils/nodemailer.js'
 import { fileURLToPath } from 'url'
 import { CustomError } from './errors/custom-error.js'
 import { EErros } from './errors/enums.js'
+import { dataVerification } from '../utils/dataVerification.js'
 import { newMessage, formattedDate } from '../utils/utils.js'
 import { UsersManagerDBDAO } from '../DAO/DB/usersManagerDB.dao.js'
 import { CodeManagerDBDAO } from '../DAO/DB/codeManagerDB.dao.js'
-import { dataVerification } from '../utils/dataVerification.js'
 const UsersManager = new UsersManagerDBDAO()
 const CodeManager = new CodeManagerDBDAO()
 export class AuthService {
   async sendEmail (email, host) {
     try {
+      dataVerification([email, host, 'string'])
       const expire = new Date()
       const code = await CodeManager.createCode(email, uuidv4(), expire.getTime() + 3600000)
       await sendMail(email, 'Recuperacion de cuenta', `
@@ -28,6 +29,7 @@ export class AuthService {
 
   async passRecover (newPass, stringCode, email) {
     try {
+      dataVerification([newPass, email, stringCode, 'string'])
       const code = await CodeManager.findCodeByMail(email, stringCode)
       const nowMiliseconds = new Date()
       if (code.expire > nowMiliseconds.getTime()) {
@@ -63,7 +65,7 @@ export class AuthService {
 
   async saveDocuments (identificacionFile, comprobanteDomicilioFile, comprobanteEstadoCuentaFile, userName) {
     try {
-      dataVerification([identificacionFile?.fieldname, comprobanteDomicilioFile?.fieldname, comprobanteEstadoCuentaFile?.fieldname, 'string'])
+      dataVerification([userName, comprobanteDomicilioFile?.fieldname, comprobanteEstadoCuentaFile?.fieldname, identificacionFile?.fieldname, 'string'], [identificacionFile, comprobanteDomicilioFile, comprobanteEstadoCuentaFile, 'object'])
       const user = await this.getUserByUserName(userName)
       user.data.documents.push({
         name: identificacionFile.fieldname,
