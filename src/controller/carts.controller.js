@@ -1,5 +1,6 @@
 import { CartManagerDBService } from '../services/carts.service.js'
 import { dataResponseToString } from '../utils/dataResponseToString.js'
+import { errorCases } from '../services/errors/errorCases.js'
 const list = new CartManagerDBService()
 export class CartsController {
   async getCartMycart (req, res) {
@@ -8,7 +9,7 @@ export class CartsController {
       const response = dataResponseToString(await list.getCartById(Id))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -17,7 +18,7 @@ export class CartsController {
       const response = dataResponseToString(await list.addCart())
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -29,7 +30,7 @@ export class CartsController {
       const response = dataResponseToString(await list.addProduct(idCart, idProduct, owner))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -40,7 +41,7 @@ export class CartsController {
       const response = dataResponseToString(await list.deleteProduct(idCart, idProduct))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -50,7 +51,7 @@ export class CartsController {
       const response = dataResponseToString(await list.deleteAllProducts(idCart))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -61,7 +62,7 @@ export class CartsController {
       const response = dataResponseToString(await list.addNewProducts(idCart, products))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -72,7 +73,7 @@ export class CartsController {
       const response = dataResponseToString(await list.createATicketToBuy(idCart, purchaser))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 }

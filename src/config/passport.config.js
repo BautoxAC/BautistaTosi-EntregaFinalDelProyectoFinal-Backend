@@ -4,6 +4,7 @@ import passport from 'passport'
 import local from 'passport-local'
 import { newMessage, createHash, isValidPassword, formattedDate } from '../utils/utils.js'
 import { CartManagerDBService } from '../services/carts.service.js'
+import { dataVerification } from '../utils/dataVerification.js'
 import { fileURLToPath } from 'url'
 import config from './env.config.js'
 import { EErros } from '../services/errors/enums.js'
@@ -19,6 +20,7 @@ export function iniPassPortLocalAndGithub () {
     'login',
     new LocalStrategy({ usernameField: 'email' }, async (username, password, done) => {
       try {
+        dataVerification([username, password, 'string'])
         const user = await usersModel.findOne({ email: username })
         if (!user) {
           CustomError.createError({
@@ -59,6 +61,7 @@ export function iniPassPortLocalAndGithub () {
       async (req, username, password, done) => {
         try {
           const { email, firstName, lastName, age } = req.body
+          dataVerification([username, password, email, firstName, lastName, 'string'], [age, 'number'])
           const user = await usersModel.findOne({ email: username })
           if (user) {
             CustomError.createError({

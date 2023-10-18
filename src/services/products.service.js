@@ -84,7 +84,7 @@ export class ProductManagerDBService {
       }
     }
     try {
-      dataVerification([query, 'string'], [limit, page, sort, 'number'])
+      dataVerification([query || 'none', 'string'], [limit, page, sort, 'number'])
       const { docs, rest } = await ProductManagerDAO.getProducts(limit, page, query, sort)
       return newMessage('success', 'the products were found correctly', res('success', docs, rest), '', 200)
     } catch (e) {

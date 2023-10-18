@@ -2,17 +2,18 @@ import { AuthService } from '../services/auth.service.js'
 import { dataResponseToString } from '../utils/dataResponseToString.js'
 import { CurrentUser } from '../DAO/DTOs/currentUser.dto.js'
 import { UsersManagerDBService } from '../services/users.service.js'
+import { errorCases } from '../services/errors/errorCases.js'
 const authServiceControlling = new AuthService()
 const UsersManager = new UsersManagerDBService()
 
 export class AuthController {
   renderLogin (req, res) {
-    return res.render('login', {})
+    return res.status(200).render('login', {})
   }
 
   logUser (req, res) {
     if (!req.user) {
-      return res.render('error', { error: 'invalid credentials' })
+      return res.status(400).render('error', { error: 'invalid credentials' })
     }
     req.session.user = {
       _id: req.user?._id,
@@ -27,7 +28,7 @@ export class AuthController {
   }
 
   loginFail (req, res) {
-    return res.render('error', { error: 'fail to login' })
+    return res.status(400).render('error', { error: 'fail to login' })
   }
 
   async logOut (req, res) {
@@ -42,12 +43,12 @@ export class AuthController {
   }
 
   renderRegister (req, res) {
-    return res.render('register', {})
+    return res.status(200).render('register', {})
   }
 
   registerUser (req, res) {
     if (!req.user) {
-      return res.render('error', { error: 'something went wrong' })
+      return res.status(500).render('error', { error: 'something went wrong' })
     }
     req.session.user = {
       _id: req.user._id,
@@ -62,11 +63,11 @@ export class AuthController {
   }
 
   registerFail (req, res) {
-    return res.render('error', { error: 'fail to register' })
+    return res.status(200).render('error', { error: 'fail to register' })
   }
 
   getSecret (req, res) {
-    return res.render('secretInfo')
+    return res.status(200).render('secretInfo')
   }
 
   async sendEmail (req, res) {
@@ -76,13 +77,13 @@ export class AuthController {
       const response = dataResponseToString(await authServiceControlling.sendEmail(email, host))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
   renderRecover (req, res) {
     const { code, email } = req.query
-    return res.render('recoverPass', { code, email })
+    return res.status(200).render('recoverPass', { code, email })
   }
 
   async passRecover (req, res) {
@@ -91,13 +92,13 @@ export class AuthController {
       const response = dataResponseToString(await authServiceControlling.passRecover(newPass, stringCode, email))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(e.statusCode).render('error', { error: e.message })
     }
   }
 
   redirectHome (req, res) {
     req.session.user = req.user
-    res.redirect('/home')
+    res.status(200).redirect('/home')
   }
 
   async RenderCurrentSession (req, res) {
@@ -106,9 +107,9 @@ export class AuthController {
       const userId = req.session.user._id
       const user = await UsersManager.getUserByUserName(req.session.user.email)
       const documents = user.data?.documents
-      return res.render('profile', { CurrentUserDTO, userId, documents })
+      return res.status(200).render('profile', { CurrentUserDTO, userId, documents })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -121,7 +122,7 @@ export class AuthController {
       const response = dataResponseToString(await authServiceControlling.saveDocuments(identificacionFile, comprobanteDomicilioFile, comprobanteEstadoCuentaFile, userName))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 }

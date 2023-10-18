@@ -1,5 +1,6 @@
 import { UsersManagerDBService } from '../services/users.service.js'
 import { dataResponseToString } from '../utils/dataResponseToString.js'
+import { errorCases } from '../services/errors/errorCases.js'
 const UsersManager = new UsersManagerDBService()
 export class UsersController {
   async changerole (req, res) {
@@ -8,16 +9,16 @@ export class UsersController {
       const response = dataResponseToString(await UsersManager.changerole(userName))
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
   async renderUsers (req, res) {
     try {
       const response = await UsersManager.getUsers()
-      return res.render('users', { users: response.data })
+      return res.status(200).render('users', { users: response.data })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -26,7 +27,7 @@ export class UsersController {
       const response = dataResponseToString(await UsersManager.deleteInactiveUsers())
       return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 
@@ -34,9 +35,9 @@ export class UsersController {
     try {
       const user = req.params?.uname
       const response = dataResponseToString(await UsersManager.deleteUserWithCart(user))
-      return res.render('response', { response })
+      return res.status(200).render('response', { response })
     } catch (e) {
-      return res.render('error', { error: e.message })
+      return res.status(errorCases(e.statusCode)).render('error', { error: e.message })
     }
   }
 }
